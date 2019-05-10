@@ -1,5 +1,5 @@
 import "Apm.alusus";
-Apm.importModule("Alusus/AGtk");
+Apm.import("Alusus/AGtk");
 
 def HelloWorld: module
 {
