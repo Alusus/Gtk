@@ -1,4 +1,4 @@
-import "Apm.module";
+import "Apm.alusus";
 Apm.importModule("Alusus/AGtk");
 
 def HelloWorld: module
