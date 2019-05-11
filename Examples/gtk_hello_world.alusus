@@ -1,12 +1,11 @@
 import "Apm.alusus";
-Apm.import("Alusus/AGtk");
+Apm.importFile("Alusus/AGtk");
 
 def HelloWorld: module
 {
   def window: ptr[Gtk.AppWindow];
 
-  def start: function
-  {
+  func start (): Void {
     def app: ptr[Gtk.App];
     def status: Int;
 
@@ -16,8 +15,7 @@ def HelloWorld: module
     Glib.unref(app);
   };
 
-  def activate: function (app: ptr[Gtk.App], data: ptr)
-  {
+  func activate (app: ptr[Gtk.App], data: ptr): Void {
     def box: ptr[Gtk.Box];
     def label: ptr[Gtk.Label];
     def buttonBox: ptr[Gtk.ButtonBox];
@@ -51,8 +49,7 @@ def HelloWorld: module
     Gtk.Widget.showAll(window);
   };
 
-  def onAboutClicked: function (widget: ptr[Gtk.Widget], data: ptr)
-  {
+  func onAboutClicked (widget: ptr[Gtk.Widget], data: ptr): Void {
     def dialog: ptr[Gtk.MessageDialog];
     dialog = Gtk.MessageDialog.new(
       window~cast[ptr[Gtk.Window]], 0, Gtk.MessageType.INFO, Gtk.ButtonsType.CLOSE, "Alusus GTK Hello World.\nauthor: Sarmad Abdullah"
@@ -61,8 +58,7 @@ def HelloWorld: module
     Gtk.Widget.destroy(dialog);
   };
 
-  def onQuitClicked: function (widget: ptr[Gtk.Widget], data: ptr)
-  {
+  func onQuitClicked (widget: ptr[Gtk.Widget], data: ptr): Void {
     Gtk.Widget.destroy(window);
   };
 };

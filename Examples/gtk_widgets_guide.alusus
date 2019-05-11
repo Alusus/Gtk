@@ -1,6 +1,6 @@
 import "Srl/String.alusus";
 import "Apm.alusus";
-Apm.import("Alusus/AGtk");
+Apm.importFile("Alusus/AGtk");
 
 module WidgetGuide
 {
