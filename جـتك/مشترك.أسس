@@ -1,6 +1,6 @@
 اشمل "../Gtk/common.alusus"؛
 
-@دمج عرف Gtk: حزمة
+@دمج عرف Gtk: وحدة
 {
   عرف منادى: لقب Callback؛
   

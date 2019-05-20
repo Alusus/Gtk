@@ -1,6 +1,6 @@
 اشمل "../Gtk/windows.alusus"؛
 
-@دمج عرف Gtk: حزمة
+@دمج عرف Gtk: وحدة
 {
   عرف نـافذة: لقب Window؛
   @دمج عرف Window:
