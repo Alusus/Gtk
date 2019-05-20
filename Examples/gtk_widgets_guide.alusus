@@ -1,6 +1,6 @@
 import "Srl/String.alusus";
 import "Apm.alusus";
-Apm.import("Alusus/AGtk");
+Apm.importFile("Alusus/AGtk");
 
 module WidgetGuide
 {
@@ -122,7 +122,7 @@ module WidgetGuide
     def label: ptr[Gtk.Label];
     hBox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 20);
     label = Gtk.Label.new("Hello World!");
-    image = Gtk.Image.new("../../Doc/Resources/logo.gif");
+    image = Gtk.Image.new("logo.gif");
     Gtk.Box.packStart(hBox, label, 1, 0, 0);
     Gtk.Box.packEnd(hBox, image, 1, 0, 0);
     Gtk.Box.packStart(box, hBox, 1, 0, 0);
