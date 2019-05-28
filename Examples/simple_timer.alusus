@@ -1,0 +1,117 @@
+
+import "Srl/Console.alusus";
+import "Srl/String.alusus";
+import "Srl/Memory.alusus";
+import "Apm.alusus";
+Apm.importFile("Alusus/AGtk");
+
+def SimpleTimer: module
+{
+    def window: ptr[Gtk.AppWindow];
+    def hours: ptr[Gtk.Label];
+    def minutes: ptr[Gtk.Label];
+    def seconds: ptr[Gtk.Label];
+    def secondsInTimer: ptr[Int];
+
+    def isPaused: bool;
+
+    @expname[g_timeout_add_seconds]
+    func timeout_add_seconds(seconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
+
+    func start (): Void {
+        def app: ptr[Gtk.App];
+        def status: Int;
+        secondsInTimer = Srl.Memory.alloc(1024)~cast[ptr[int]];
+        secondsInTimer~cnt = 86390; // 23 hours 59 minutes 50 seconds
+        isPaused = false;
+
+        // start timer
+        timeout_add_seconds(1, timer~ptr, secondsInTimer);
+
+        app = Gtk.App.new("org.alusus.simple-timer", 0);
+        Glib.connectSignal(app, Gtk.Signal.ACTIVATE, applicationActivated~ptr~cast[ptr[function]], 0, 0, 0);
+        status = Gtk.App.exec(app, 0, 0);
+        Glib.unref(app);
+    };
+
+    func applicationActivated (app: ptr[Gtk.App], data: ptr): Void {
+        def box: ptr[Gtk.Box] = Gtk.Box.new(Gtk.Orientation.VERTICAL, 20);
+        def timer: ptr[Gtk.Box] = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0);
+        def label: ptr[Gtk.Label] = Gtk.Label.new("Timer");
+        def buttonBox: ptr[Gtk.ButtonBox] = Gtk.ButtonBox.new(Gtk.Orientation.HORIZONTAL);
+        def resumeBtn: ptr[Gtk.Button] = Gtk.Button.newWithLabel("Resume");
+        def pauseBtn: ptr[Gtk.Button] = Gtk.Button.newWithLabel("Pause");
+        def resetBtn: ptr[Gtk.Button] = Gtk.Button.newWithLabel("Reset");
+
+        hours = Gtk.Label.new("00");
+        minutes = Gtk.Label.new("00");
+        seconds = Gtk.Label.new("00");
+
+        window = Gtk.AppWindow.new(app);
+        Gtk.Window.setTitle(window, "Simple Timer");
+        Gtk.Window.setDefaultSize(window, 480, 320);
+
+        Gtk.ButtonBox.setLayout(buttonBox, Gtk.ButtonBoxStyle.SPREAD);
+        Glib.connectSignal(resumeBtn, Gtk.Signal.CLICKED, onResumeClicked~ptr~cast[ptr[function]], 0, 0, 0);
+        Gtk.Container.add(buttonBox, resumeBtn);
+
+        Glib.connectSignal(pauseBtn, Gtk.Signal.CLICKED, onPauseClicked~ptr~cast[ptr[function]], 0, 0, 0);
+        Gtk.Container.add(buttonBox, pauseBtn);
+
+        Glib.connectSignal(resetBtn, Gtk.Signal.CLICKED, onResetClicked~ptr~cast[ptr[function]], 0, 0, 0);
+        Gtk.Container.add(buttonBox, resetBtn);
+
+        Gtk.Box.packStart(box, label, 1, 0, 0);
+        Gtk.Box.packStart(timer, hours, 1, 0, 0);
+        Gtk.Box.packStart(timer, Gtk.Label.new(":"), 1, 0, 0);
+        Gtk.Box.packStart(timer, minutes, 1, 0, 0);
+        Gtk.Box.packStart(timer, Gtk.Label.new(":"), 1, 0, 0);
+        Gtk.Box.packStart(timer, seconds, 1, 0, 0);
+        Gtk.Box.packStart(box, timer, 1, 0, 0);
+        Gtk.Box.packStart(box, buttonBox, 1, 0, 0);
+
+        Gtk.Container.add(window, box);
+
+        Gtk.Widget.showAll(window);
+    };
+
+    func onResumeClicked (widget: ptr[Gtk.Widget], data: ptr): Void {
+        isPaused = false;
+    };
+
+    func onPauseClicked (widget: ptr[Gtk.Widget], data: ptr): Void {
+        isPaused = true;
+    };
+
+    func onResetClicked (widget: ptr[Gtk.Widget], data: ptr): Void {
+        secondsInTimer~cnt = 0;
+        isPaused = false;
+    };
+
+    func timer(args: ptr): bool {
+        if isPaused {
+            return true;
+        };
+
+        secondsInTimer~cnt += 1;
+
+        // display seconds on screen
+        def secondsTimeIntToString: ptr[array[char]] = Srl.Memory.alloc(5)~cast[ptr[array[char]]];
+        Srl.String.assign(secondsTimeIntToString, "%d", (secondsInTimer~cnt) % 60);
+        Gtk.Label.setText(seconds, secondsTimeIntToString);
+
+        // display minutes on screen
+        def minutesTimeIntToString: ptr[array[char]] = Srl.Memory.alloc(5)~cast[ptr[array[char]]];
+        Srl.String.assign(minutesTimeIntToString, "%d", (secondsInTimer~cnt / 60) % 60);
+        Gtk.Label.setText(minutes, minutesTimeIntToString);
+
+        // display hours on screen
+        def hoursTimeIntToString: ptr[array[char]] = Srl.Memory.alloc(5)~cast[ptr[array[char]]];
+        Srl.String.assign(hoursTimeIntToString, "%d", (secondsInTimer~cnt / 60 / 60) % 24);
+        Gtk.Label.setText(hours, hoursTimeIntToString);
+
+        return true;
+    };
+};
+
+SimpleTimer.start();
