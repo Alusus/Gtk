@@ -25,7 +25,7 @@ def SimpleTimer: module
         isPaused = false;
 
         // start timer
-        timeout_add_seconds(1, timer~ptr, secondsInTimer);
+        Glib.Timeout.addSeconds(1, timer~ptr, secondsInTimer);
 
         app = Gtk.App.new("org.alusus.simple-timer", 0);
         Glib.connectSignal(app, Gtk.Signal.ACTIVATE, applicationActivated~ptr~cast[ptr[function]], 0, 0, 0);
