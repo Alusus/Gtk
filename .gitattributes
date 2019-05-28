@@ -1,3 +1,3 @@
 # used to remove files from deployment using `git archive`
 # examples
-Examples
+Examples export-ignore
