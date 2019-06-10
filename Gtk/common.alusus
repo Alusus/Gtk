@@ -67,5 +67,24 @@
   {
     @shared def getChars: @expname[gtk_editable_get_chars] function (editable: ptr[Editable], start: Int, end: Int) => ptr[Char];
   };
+
+  def Builder: type
+  {
+    @shared
+    @expname[gtk_builder_new]
+    func new(): ptr[Builder];
+
+    @shared
+    @expname[gtk_builder_new]
+    func new_from_file(filename: ptr[Char]): ptr[Builder];
+
+    @shared
+    @expname[gtk_builder_new_from_resource]
+    func new_from_resource(resource_path: ptr[Char]): ptr[Builder];
+
+    @shared
+    @expname[gtk_builder_connect_signals]
+    func connectSignals(builder: ptr[Builder], userData: ptr): Void;
+  };
 };
 
