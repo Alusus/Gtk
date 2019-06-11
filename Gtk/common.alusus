@@ -76,11 +76,11 @@
 
     @shared
     @expname[gtk_builder_new]
-    func new_from_file(filename: ptr[Char]): ptr[Builder];
+    func newFromFile(filename: ptr[Char]): ptr[Builder];
 
     @shared
     @expname[gtk_builder_new_from_resource]
-    func new_from_resource(resource_path: ptr[Char]): ptr[Builder];
+    func newFromResource(resource_path: ptr[Char]): ptr[Builder];
 
     @shared
     @expname[gtk_builder_connect_signals]
