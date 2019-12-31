@@ -1,5 +1,5 @@
 import "Apm.alusus";
-Apm.importFile("Alusus/AGtk");
+Apm.importFile("Alusus/Gtk");
 import "Build.alusus";
 
 def HelloWorld: module

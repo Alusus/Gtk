@@ -1,22 +1,26 @@
 @merge def Glib: module
 {
-  def connectSignal: @expname[g_signal_connect_data] function (
-    instance: ptr, detailedSignal: ptr[Char], handler: ptr[function], data: ptr,
-    destroyData: ptr[function], flags: Int
-  ) => Word[64];
-  def unref: @expname[g_object_unref] function (p: ptr);
+  @expname[g_signal_connect_data]
+  func connectSignal(
+    instance: ptr, detailedSignal: ptr[Char], handler: ptr[func], data: ptr,
+    destroyData: ptr[func], flags: Int
+  ): Word[64];
 
-  def Func: alias ptr[function (data: ptr, userData: ptr)];
-  def CompareFunc: alias ptr[function (ptr, ptr)=>Int];
-  def CompareDataFunc: alias ptr[function (a: ptr, b: ptr, data: ptr) => Int];
-  def CopyFunc: alias ptr[function (src: ptr, data: ptr) => ptr];
-  def DestroyNotify: alias ptr[function (data: ptr)];
+  @expname[g_object_unref] func unref(p: ptr);
+
+  def Func: alias ptr[func (data: ptr, userData: ptr)];
+  def CompareFunc: alias ptr[func (ptr, ptr)=>Int];
+  def CompareDataFunc: alias ptr[func (a: ptr, b: ptr, data: ptr) => Int];
+  def CopyFunc: alias ptr[func (src: ptr, data: ptr) => ptr];
+  def DestroyNotify: alias ptr[func (data: ptr)];
 
   def Type: type
   {
     def t: Word[64];
     
-    @shared def init: @expname[g_type_init] function;
+    @shared
+    @expname[g_type_init] 
+    func init;
     
     def INVALID: 0;
     def NONE: 4;
@@ -42,33 +46,116 @@
     def VARIANT: 84;
   };
 
-  def Value: type
+  type Value
   {
     def t: Type;
     def v: array[Int[64], 2];
 
-    @shared def init: @expname[g_value_init] function (value: ptr[Value], t: Type) => ptr[Value];
-    @shared def setBool: @expname[g_value_set_boolean] function (value: ptr[Value], v: Bool);
-    @shared def getBool: @expname[g_value_get_boolean] function (value: ptr[Value]) => Bool;
-    @shared def setChar: @expname[g_value_set_char] function (value: ptr[Value], c: Char);
-    @shared def getChar: @expname[g_value_get_char] function (value: ptr[Value]) => Char;
-    @shared def setInt: @expname[g_value_set_int] function (value: ptr[Value], i: Int);
-    @shared def getInt: @expname[g_value_get_int] function (value: ptr[Value]) => Int;
-    @shared def setUint: @expname[g_value_set_uint] function (value: ptr[Value], i: Word);
-    @shared def getUint: @expname[g_value_get_uint] function (value: ptr[Value]) => Word;
-    @shared def setInt64: @expname[g_value_set_int64] function (value: ptr[Value], i: Int[64]);
-    @shared def getInt64: @expname[g_value_get_int64] function (value: ptr[Value]) => Int[64];
-    @shared def setUint64: @expname[g_value_set_uint64] function (value: ptr[Value], i: Word[64]);
-    @shared def getUint64: @expname[g_value_get_uint64] function (value: ptr[Value]) => Word[64];
-    @shared def setFloat: @expname[g_value_set_float] function (value: ptr[Value], f: Float);
-    @shared def getFloat: @expname[g_value_get_float] function (value: ptr[Value]) => Float;
-    @shared def setDouble: @expname[g_value_set_double] function (value: ptr[Value], d: Float[64]);
-    @shared def getDouble: @expname[g_value_get_double] function (value: ptr[Value]) => Float[64];
-    @shared def setString: @expname[g_value_set_string] function (value: ptr[Value], s: ptr[Char]);
-    @shared def setStaticString: @expname[g_value_set_static_string] function (value: ptr[Value], s: ptr[Char]);
-    @shared def getString: @expname[g_value_get_string] function (value: ptr[Value]) => ptr[Char];
-    @shared def setPointer: @expname[g_value_set_pointer] function (value: ptr[Value], p: ptr);
-    @shared def getPointer: @expname[g_value_get_pointer] function (value: ptr[Value]) => ptr;
+    @shared
+    @expname[g_value_init]
+    func init(value: ptr[Value], t: Type): ptr[Value];
+    
+    @shared
+    @expname[g_value_set_boolean]
+    func setBool(value: ptr[Value], v: Bool);
+    
+    @shared
+    @expname[g_value_get_boolean]
+    func getBool(value: ptr[Value]): Bool;
+    
+    @shared
+    @expname[g_value_set_char]
+    func setChar(value: ptr[Value], c: Char);
+    
+    @shared
+    @expname[g_value_get_char]
+    func getChar(value: ptr[Value]): Char;
+    
+    @shared
+    @expname[g_value_set_int]
+    func setInt(value: ptr[Value], i: Int);
+    
+    @shared
+    @expname[g_value_get_int]
+    func getInt(value: ptr[Value]): Int;
+    
+    @shared
+    @expname[g_value_set_uint]
+    func setUint(value: ptr[Value], i: Word);
+    
+    @shared
+    @expname[g_value_get_uint]
+    func getUint(value: ptr[Value]): Word;
+    
+    @shared
+    @expname[g_value_set_int64]
+    func setInt64(value: ptr[Value], i: Int[64]);
+    
+    @shared
+    @expname[g_value_get_int64]
+    func getInt64(value: ptr[Value]): Int[64];
+    
+    @shared
+    @expname[g_value_set_uint64]
+    func setUint64(value: ptr[Value], i: Word[64]);
+    
+    @shared
+    @expname[g_value_get_uint64]
+    func getUint64(value: ptr[Value]): Word[64];
+    
+    @shared
+    @expname[g_value_set_float]
+    func setFloat(value: ptr[Value], f: Float);
+    
+    @shared
+    @expname[g_value_get_float]
+    func getFloat(value: ptr[Value]): Float;
+    
+    @shared
+    @expname[g_value_set_double]
+    func setDouble(value: ptr[Value], d: Float[64]);
+    
+    @shared
+    @expname[g_value_get_double]
+    func getDouble(value: ptr[Value]): Float[64];
+    
+    @shared
+    @expname[g_value_set_string]
+    func setString(value: ptr[Value], s: ptr[Char]);
+    
+    @shared
+    @expname[g_value_set_static_string]
+    func setStaticString(value: ptr[Value], s: ptr[Char]);
+    
+    @shared
+    @expname[g_value_get_string]
+    func getString(value: ptr[Value]): ptr[Char];
+    
+    @shared
+    @expname[g_value_set_pointer]
+    func setPointer(value: ptr[Value], p: ptr);
+    
+    @shared
+    @expname[g_value_get_pointer]
+    func getPointer(value: ptr[Value]): ptr;
+  };
+
+  type Timeout {
+    @shared
+    @expname[g_timeout_add]
+    func add(mileseconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
+
+    @shared
+    @expname[g_timeout_add_full]
+    func addFull(priority: int, mileseconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
+
+    @shared
+    @expname[g_timeout_add_seconds]
+    func addSeconds(seconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
+
+    @shared
+    @expname[g_timeout_add_seconds_full]
+    func addSeconds(priority: int, seconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
   };
 };
 
