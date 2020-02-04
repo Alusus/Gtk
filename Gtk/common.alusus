@@ -1,4 +1,4 @@
-@merge def Gtk: module
+@deps["libgtk-3.so.0", "libgobject-2.0.so.0", "libgio-2.0.so.0"] @merge def Gtk: module
 {
   def Callback: alias ptr[function (widget: ptr[Widget], data: ptr)];
 

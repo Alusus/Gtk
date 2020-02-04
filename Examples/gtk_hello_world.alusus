@@ -1,11 +1,12 @@
 import "Apm.alusus";
 Apm.importFile("Alusus/Gtk");
+import "Build.alusus";
 
 def HelloWorld: module
 {
   def window: ptr[Gtk.AppWindow];
 
-  func start (): Void {
+  @expname[main] func start {
     def app: ptr[Gtk.App];
     def status: Int;
 
@@ -63,5 +64,15 @@ def HelloWorld: module
   };
 };
 
-HelloWorld.start();
+if Process.argCount < 3 {
+  HelloWorld.start();
+} else {
+  def exe: ptr[Build.Exe] = Build.Exe.new(HelloWorld.start~ast, Process.args~cnt(Process.argCount - 1));
+  Build.Exe.addDependency(exe, Gtk~ast);
+  if Build.Exe.generate(exe) {
+    Srl.Console.print("Build complete.\n");
+  } else {
+    Srl.Console.print("Build failed.\n");
+  };
+};
 

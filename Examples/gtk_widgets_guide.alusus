@@ -1,12 +1,13 @@
 import "Srl/String.alusus";
 import "Apm.alusus";
 Apm.importFile("Alusus/Gtk");
+import "Build.alusus";
 
 module WidgetGuide
 {
   def window: ptr[Gtk.AppWindow];
 
-  function start
+  @expname[main] function start
   {
     def app: ptr[Gtk.App];
     def status: Int;
@@ -30,7 +31,7 @@ module WidgetGuide
     // Create a paned element.
     def paned: ptr[Gtk.Paned];
     paned = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL);
-    Gtk.Container.add(window, paned);    
+    Gtk.Container.add(window, paned);
     Gtk.Paned.setPosition(paned, 150);
 
     // Create a box for the second side of the pane.
@@ -90,7 +91,7 @@ module WidgetGuide
     Glib.connectSignal(item, Gtk.Signal.ACTIVATE, onQuitClicked~ptr~cast[ptr[func]], 0, 0, 0);
     Gtk.MenuShell.append(menu, item);
     Gtk.Widget.show(item);
-    
+
     def button: ptr[Gtk.MenuButton];
     button = Gtk.MenuButton.new();
     Gtk.MenuButton.setPopup(button, menu);
@@ -102,7 +103,7 @@ module WidgetGuide
     def listBox: ptr[Gtk.ListBox];
     listBox = Gtk.ListBox.new();
     Gtk.Paned.pack1(paned, listBox, 0, 1);
-    
+
     def str: array[Char, 100];
     def i: Int;
     for i = 1, i <= 10, ++i {
@@ -111,7 +112,7 @@ module WidgetGuide
       label = Gtk.Label.new(str~ptr);
       Gtk.ListBox.insert(listBox, label, -1);
     };
-    
+
     Glib.connectSignal(listBox, Gtk.Signal.ROW_SELECTED, onListBoxSelectionChanged~ptr~cast[ptr[function]], label, 0, 0);
   };
 
@@ -242,5 +243,15 @@ module WidgetGuide
   };
 };
 
-WidgetGuide.start();
+if Process.argCount < 3 {
+  WidgetGuide.start();
+} else {
+  def exe: ptr[Build.Exe] = Build.Exe.new(WidgetGuide.start~ast, Process.args~cnt(Process.argCount - 1));
+  Build.Exe.addDependency(exe, Gtk~ast);
+  if Build.Exe.generate(exe) {
+    Srl.Console.print("Build complete.\n");
+  } else {
+    Srl.Console.print("Build failed.\n");
+  };
+};
 
