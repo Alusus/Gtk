@@ -4,40 +4,77 @@
   {
     def container: Container;
 
-    @shared def setTitle: @expname[gtk_window_set_title] function (window: ptr[Window], title: ptr[Char]);
-    @shared def setTitlebar: @expname[gtk_window_set_titlebar] function (window: ptr[Window], titlebar: ptr[Widget]);
-    @shared def setResizable: @expname[gtk_window_set_resizable] function (window: ptr[Window], resiable: Bool);
-    @shared def setModal: @expname[gtk_window_set_modal] function (window: ptr[Window], modal: Bool);
-    @shared def setDefaultSize: @expname[gtk_window_set_default_size] function (window: ptr[Window], width: Int, height: Int);
-    @shared def setTransientFor: @expname[gtk_window_set_transient_for] function (window: ptr[Window], parent: ptr[Window]);
-    @shared def setDestroyWithParent: @expname[gtk_window_set_destroy_with_parent] function (window: ptr[Window], setting: Bool);
-    @shared def isActive: @expname[gtk_window_is_active] function (window: ptr[Window]) => Bool;
-    @shared def getFocus: @expname[gtk_window_get_focus] function (window: ptr[Window]) => ptr[Widget];
-    @shared def setFocus: @expname[gtk_window_set_focus] function (window: ptr[Window], widget: ptr[Widget]);
-    @shared def close: @expname[gtk_window_close] function (window: ptr[Window]);
+    @shared
+    @expname[gtk_window_set_title]
+    func setTitle (window: ptr[Window], title: ptr[array[Char]]);
+
+    @shared
+    @expname[gtk_window_set_titlebar]
+    func setTitlebar (window: ptr[Window], titlebar: ptr[Widget]);
+
+    @shared
+    @expname[gtk_window_set_resizable]
+    func setResizable (window: ptr[Window], resiable: Bool);
+
+    @shared
+    @expname[gtk_window_set_modal]
+    func setModal (window: ptr[Window], modal: Bool);
+
+    @shared
+    @expname[gtk_window_set_default_size]
+    func setDefaultSize (window: ptr[Window], width: Int, height: Int);
+
+    @shared
+    @expname[gtk_window_set_transient_for]
+    func setTransientFor (window: ptr[Window], parent: ptr[Window]);
+
+    @shared
+    @expname[gtk_window_set_destroy_with_parent]
+    func setDestroyWithParent (window: ptr[Window], setting: Bool);
+
+    @shared
+    @expname[gtk_window_is_active]
+    func isActive (window: ptr[Window]) => Bool;
+
+    @shared
+    @expname[gtk_window_get_focus]
+    func getFocus (window: ptr[Window]) => ptr[Widget];
+
+    @shared
+    @expname[gtk_window_set_focus]
+    func setFocus (window: ptr[Window], widget: ptr[Widget]);
+
+    @shared
+    @expname[gtk_window_close]
+    func close (window: ptr[Window]);
   };
 
   def AppWindow: type
   {
     def window: Window;
 
-    @shared def new: @expname[gtk_application_window_new] function (app: ptr[App]) => ptr[AppWindow];
+    @shared
+    @expname[gtk_application_window_new]
+    func new (app: ptr[App]) => ptr[AppWindow];
   };
 
   def Dialog: type
   {
     def window: Window;
 
-    @shared def exec: @expname[gtk_dialog_run] function (dialog: ptr[Dialog]) => Int;
+    @shared
+    @expname[gtk_dialog_run]
+    func exec (dialog: ptr[Dialog]) => Int;
   };
 
   def MessageDialog: type
   {
     def dialog: Dialog;
 
-    @shared def new: @expname[gtk_message_dialog_new] function (
-      parent: ptr[Window], flags: Int, dlgType: Int, buttons: Int, msg: ptr[Char], args: ...any
+    @shared
+    @expname[gtk_message_dialog_new]
+    func new (
+      parent: ptr[Window], flags: Int, dlgType: Int, buttons: Int, msg: ptr[array[Char]], args: ...any
     ) => ptr[MessageDialog];
   };
 };
-

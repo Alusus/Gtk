@@ -6,7 +6,8 @@ def HelloWorld: module
 {
   def window: ptr[Gtk.AppWindow];
 
-  @expname[main] func start {
+  @expname[main]
+  func start {
     def app: ptr[Gtk.App];
     def status: Int;
 

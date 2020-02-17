@@ -7,7 +7,8 @@ module WidgetGuide
 {
   def window: ptr[Gtk.AppWindow];
 
-  @expname[main] function start
+  @expname[main]
+  function start
   {
     def app: ptr[Gtk.App];
     def status: Int;
@@ -209,7 +210,7 @@ module WidgetGuide
   function onSayClicked (widget: ptr[Gtk.Widget], textBuffer: ptr[Gtk.TextBuffer])
   {
     // Get the text from the buffer.
-    def text: ptr[Char];
+    def text: ptr[array[Char]];
     def startIter: Gtk.TextIter;
     def endIter: Gtk.TextIter;
     Gtk.TextBuffer.getStartIter(textBuffer, startIter~ptr);

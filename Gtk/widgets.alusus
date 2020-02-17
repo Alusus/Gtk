@@ -1,8 +1,8 @@
-@merge 
+@merge
 module Gtk {
   type Bin {
     def container: Container;
-    
+
     @shared
     @expname[gtk_bin_get_child]
     func getChild(bin: ptr[Bin]): ptr[Widget];
@@ -10,17 +10,17 @@ module Gtk {
 
   type Box {
     def container: Container;
-    
+
     @shared
 		@expname[gtk_box_new]
 		func new(orientation: Int, spacing: Int): ptr[Box];
-    
+
     @shared
     @expname[gtk_box_pack_start]
     func packStart(
       box: ptr[Box], child: ptr[Widget], expand: Bool, fill: Bool, padding: Word
     );
-    
+
     @shared
     @expname[gtk_box_pack_end]
     func packEnd(
@@ -34,7 +34,7 @@ module Gtk {
     @shared
 		@expname[gtk_button_box_new]
 		func new(orientation: Int): ptr[ButtonBox];
-    
+
     @shared
 		@expname[gtk_button_box_set_layout]
 		func setLayout(widget: ptr[ButtonBox], style: Int);
@@ -42,23 +42,23 @@ module Gtk {
 
   type Paned {
     def container: Container;
-    
+
     @shared
 		@expname[gtk_paned_new]
 		func new(orientation: Int): ptr[Paned];
-    
+
     @shared
 		@expname[gtk_paned_pack1]
 		func pack1(paned: ptr[Paned], widget: ptr[Widget], resize: Bool, shrink: Bool);
-    
+
     @shared
 		@expname[gtk_paned_pack2]
 		func pack2(paned: ptr[Paned], widget: ptr[Widget], resize: Bool, shrink: Bool);
-    
+
     @shared
 		@expname[gtk_paned_set_position]
 		func setPosition(paned: ptr[Paned], position: Int);
-    
+
     @shared
 		@expname[gtk_paned_get_position]
 		func getPosition(paned: ptr[Paned]): Int;
@@ -66,7 +66,7 @@ module Gtk {
 
   type Stack{
     def container: Container;
-    
+
     @shared
 		@expname[gtk_stack_new]
 		func new(): ptr[Stack];
@@ -75,11 +75,11 @@ module Gtk {
   type StackSwitcher
   {
     def box: Box;
-    
+
     @shared
 		@expname[gtk_stack_switcher_new]
 		func new(): ptr[StackSwitcher];
-    
+
     @shared
     @expname[gtk_stack_switcher_set_stack]
     func setStack(
@@ -89,23 +89,23 @@ module Gtk {
 
   type ListBox {
     def container: Container;
-    
+
     @shared
 		@expname[gtk_list_box_new]
 		func new(): ptr[ListBox];
-    
+
     @shared
 		@expname[gtk_list_box_prepend]
 		func prepend(box: ptr[ListBox], child: ptr[Widget]);
-    
+
     @shared
 		@expname[gtk_list_box_insert]
 		func insert(box: ptr[ListBox], child: ptr[Widget], position: Int);
-    
+
     @shared
 		@expname[gtk_list_box_get_selected_rows]
 		func getSelectedRows(box: ptr[ListBox]): ptr[Glib.List];
-    
+
     @shared
 		@expname[gtk_list_box_set_selection_mode]
 		func setSelectionMode(box: ptr[ListBox], mode: Int);
@@ -113,23 +113,23 @@ module Gtk {
 
   type Button {
     def container: Bin;
-    
+
     @shared
 		@expname[gtk_button_new_with_label]
-		func newWithLabel(label: ptr[Char]): ptr[Button];
+		func newWithLabel(label: ptr[array[Char]]): ptr[Button];
   };
 
   type ToggleButton {
     def button: Button;
-    
+
     @shared
 		@expname[gtk_toggle_button_new_with_label]
-		func new(label: ptr[Char]): ptr[ToggleButton];
-    
+		func new(label: ptr[array[Char]]): ptr[ToggleButton];
+
     @shared
 		@expname[gtk_toggle_button_set_active]
 		func setActive(button: ptr[ToggleButton], active: Bool);
-    
+
     @shared
 		@expname[gtk_toggle_button_get_active]
 		func getActive(button: ptr[ToggleButton]): Bool;
@@ -137,19 +137,19 @@ module Gtk {
 
   type CheckButton {
     def button: ToggleButton;
-    
+
     @shared
 		@expname[gtk_check_button_new_with_label]
-		func new(label: ptr[Char]): ptr[CheckButton];
+		func new(label: ptr[array[Char]]): ptr[CheckButton];
   };
 
   type MenuButton {
     def button: ToggleButton;
-    
+
     @shared
 		@expname[gtk_menu_button_new]
 		func new(): ptr[MenuButton];
-    
+
     @shared
 		@expname[gtk_menu_button_set_popup]
 		func setPopup(button: ptr[MenuButton], widget: ptr[Widget]);
@@ -157,15 +157,15 @@ module Gtk {
 
   type MenuShell {
     def container: Container;
-    
+
     @shared
 		@expname[gtk_menu_shell_append]
 		func append(menuShell: ptr[MenuShell], child: ptr[Widget]);
-    
+
     @shared
 		@expname[gtk_menu_shell_prepend]
 		func prepend(menuShell: ptr[MenuShell], child: ptr[Widget]);
-    
+
     @shared
 		@expname[gtk_menu_shell_insert]
 		func insert(menuShel: ptr[MenuShell], child: ptr[Widget], pos: Int);
@@ -173,7 +173,7 @@ module Gtk {
 
   type Menu {
     def menuShell: MenuShell;
-    
+
     @shared
 		@expname[gtk_menu_new]
 		func new(): ptr[Menu];
@@ -181,19 +181,19 @@ module Gtk {
 
   type MenuItem {
     def bin: Bin;
-    
+
     @shared
 		@expname[gtk_menu_item_new_with_label]
-		func new(label: ptr[Char]): ptr[MenuItem];
+		func new(label: ptr[array[Char]]): ptr[MenuItem];
   };
 
   type Image {
     def widget: Widget;
-    
+
     @shared
 		@expname[gtk_image_new_from_file]
-		func new(filename: ptr[Char]): ptr[Image];
-    
+		func new(filename: ptr[array[Char]]): ptr[Image];
+
     @shared
 		@expname[gtk_image_set_pixel_size]
 		func setPixelSize(image: ptr[Image], size: Int);
@@ -201,83 +201,83 @@ module Gtk {
 
   type Label {
     def widget: Widget;
-    
+
     @shared
 		@expname[gtk_label_new]
-		func new(str: ptr[Char]): ptr[Label];
-    
+		func new(str: ptr[array[Char]]): ptr[Label];
+
     @shared
 		@expname[gtk_label_set_text]
-		func setText(label: ptr[Label], text: ptr[Char]);
-    
+		func setText(label: ptr[Label], text: ptr[array[Char]]);
+
     @shared
 		@expname[gtk_label_get_text]
-		func getText(label: ptr[Label]): ptr[Char];
+		func getText(label: ptr[Label]): ptr[array[Char]];
   };
 
   type Entry {
     def widget: Widget;
-    
+
     @shared
 		@expname[gtk_entry_new]
 		func new(): ptr[Entry];
-    
+
     @shared
 		@expname[gtk_entry_set_text]
-		func setText(entry: ptr[Entry], text: ptr[Char]);
-    
+		func setText(entry: ptr[Entry], text: ptr[array[Char]]);
+
     @shared
 		@expname[gtk_entry_get_text]
-		func getText(entry: ptr[Entry]): ptr[Char];
-    
+		func getText(entry: ptr[Entry]): ptr[array[Char]];
+
     @shared
 		@expname[gtk_entry_get_text_length]
 		func getTextLength(entry: ptr[Entry]): Int[16];
-    
+
     @shared
 		@expname[gtk_entry_set_visibility]
 		func setVisibility(entry: ptr[Entry], visible: Bool);
-    
+
     @shared
 		@expname[gtk_entry_set_invisible_char]
 		func setInvisibleChar(entry: ptr[Entry], chr: Int[32]);
-    
+
     @shared
 		@expname[gtk_entry_set_width_chars]
 		func setWidthChars(entry: ptr[Entry], nchars: Int);
-    
+
     @shared
 		@expname[gtk_entry_set_has_frame]
 		func setHasFrame(entry: ptr[Entry], hasFrame: Bool);
-    
+
     @shared
 		@expname[gtk_entry_set_alignment]
 		func setAlignment(entry: ptr[Entry], xalign: Float);
-    
+
     @shared
 		@expname[gtk_entry_set_placeholder_text]
-		func setPlaceholderText(entry: ptr[Entry], text: ptr[Char]);
+		func setPlaceholderText(entry: ptr[Entry], text: ptr[array[Char]]);
   };
 
   type TextView {
     def container: Container;
-    
+
     @shared
 		@expname[gtk_text_view_new_with_buffer]
 		func new(buf: ptr[TextBuffer]): ptr[TextView];
-    
+
     @shared
 		@expname[gtk_text_view_set_wrap_mode]
 		func setWrapMode(textView: ptr[TextView], mode: Int);
-    
+
     @shared
 		@expname[gtk_text_view_set_editable]
 		func setEditable(textView: ptr[TextView], setting: Bool);
-    
+
     @shared
 		@expname[gtk_text_view_set_cursor_visible]
 		func setCursorVisible(textView: ptr[TextView], setting: Bool);
-    
+
     @shared
 		@expname[gtk_text_view_set_justification]
 		func setJustification(textView: ptr[TextView], justification: Int);
@@ -285,31 +285,31 @@ module Gtk {
 
   type HeaderBar {
     def container: Container;
-    
+
     @shared
 		@expname[gtk_header_bar_new]
 		func new(): ptr[HeaderBar];
-    
+
     @shared
 		@expname[gtk_header_bar_set_title]
-		func setTitle(bar: ptr[HeaderBar], title: ptr[Char]);
-    
+		func setTitle(bar: ptr[HeaderBar], title: ptr[array[Char]]);
+
     @shared
 		@expname[gtk_header_bar_set_subtitle]
-		func setSubtitle(bar: ptr[HeaderBar], subtitle: ptr[Char]);
-    
+		func setSubtitle(bar: ptr[HeaderBar], subtitle: ptr[array[Char]]);
+
     @shared
 		@expname[gtk_header_bar_set_custom_title]
 		func setCustomTitle(bar: ptr[HeaderBar], widget: ptr[Widget]);
-    
+
     @shared
 		@expname[gtk_header_bar_pack_start]
 		func packStart(bar: ptr[HeaderBar], widget: ptr[Widget]);
-    
+
     @shared
 		@expname[gtk_header_bar_pack_end]
 		func packEnd(bar: ptr[HeaderBar], widget: ptr[Widget]);
-    
+
     @shared
 		@expname[gtk_header_bar_set_show_close_button]
 		func setShowCloseButton(bar: ptr[HeaderBar], setting: Bool);

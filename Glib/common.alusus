@@ -2,7 +2,7 @@
 {
   @expname[g_signal_connect_data]
   func connectSignal(
-    instance: ptr, detailedSignal: ptr[Char], handler: ptr[func], data: ptr,
+    instance: ptr, detailedSignal: ptr[array[Char]], handler: ptr[func], data: ptr,
     destroyData: ptr[func], flags: Int
   ): Word[64];
 
@@ -17,11 +17,11 @@
   def Type: type
   {
     def t: Word[64];
-    
+
     @shared
-    @expname[g_type_init] 
+    @expname[g_type_init]
     func init;
-    
+
     def INVALID: 0;
     def NONE: 4;
     def INTERFACE: 8;
@@ -54,87 +54,87 @@
     @shared
     @expname[g_value_init]
     func init(value: ptr[Value], t: Type): ptr[Value];
-    
+
     @shared
     @expname[g_value_set_boolean]
     func setBool(value: ptr[Value], v: Bool);
-    
+
     @shared
     @expname[g_value_get_boolean]
     func getBool(value: ptr[Value]): Bool;
-    
+
     @shared
     @expname[g_value_set_char]
     func setChar(value: ptr[Value], c: Char);
-    
+
     @shared
     @expname[g_value_get_char]
     func getChar(value: ptr[Value]): Char;
-    
+
     @shared
     @expname[g_value_set_int]
     func setInt(value: ptr[Value], i: Int);
-    
+
     @shared
     @expname[g_value_get_int]
     func getInt(value: ptr[Value]): Int;
-    
+
     @shared
     @expname[g_value_set_uint]
     func setUint(value: ptr[Value], i: Word);
-    
+
     @shared
     @expname[g_value_get_uint]
     func getUint(value: ptr[Value]): Word;
-    
+
     @shared
     @expname[g_value_set_int64]
     func setInt64(value: ptr[Value], i: Int[64]);
-    
+
     @shared
     @expname[g_value_get_int64]
     func getInt64(value: ptr[Value]): Int[64];
-    
+
     @shared
     @expname[g_value_set_uint64]
     func setUint64(value: ptr[Value], i: Word[64]);
-    
+
     @shared
     @expname[g_value_get_uint64]
     func getUint64(value: ptr[Value]): Word[64];
-    
+
     @shared
     @expname[g_value_set_float]
     func setFloat(value: ptr[Value], f: Float);
-    
+
     @shared
     @expname[g_value_get_float]
     func getFloat(value: ptr[Value]): Float;
-    
+
     @shared
     @expname[g_value_set_double]
     func setDouble(value: ptr[Value], d: Float[64]);
-    
+
     @shared
     @expname[g_value_get_double]
     func getDouble(value: ptr[Value]): Float[64];
-    
+
     @shared
     @expname[g_value_set_string]
-    func setString(value: ptr[Value], s: ptr[Char]);
-    
+    func setString(value: ptr[Value], s: ptr[array[Char]]);
+
     @shared
     @expname[g_value_set_static_string]
-    func setStaticString(value: ptr[Value], s: ptr[Char]);
-    
+    func setStaticString(value: ptr[Value], s: ptr[array[Char]]);
+
     @shared
     @expname[g_value_get_string]
-    func getString(value: ptr[Value]): ptr[Char];
-    
+    func getString(value: ptr[Value]): ptr[array[Char]];
+
     @shared
     @expname[g_value_set_pointer]
     func setPointer(value: ptr[Value], p: ptr);
-    
+
     @shared
     @expname[g_value_get_pointer]
     func getPointer(value: ptr[Value]): ptr;

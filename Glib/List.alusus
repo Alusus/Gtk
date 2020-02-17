@@ -7,34 +7,114 @@ import "./common.alusus";
     def data: ptr;
     def next: ptr[List];
     def prev: ptr[List];
-  
-    @shared def append: @expname[g_list_append] function (list: ptr[List], data: ptr) => ptr[List];
-    @shared def prepend: @expname[g_list_prepend] function (list: ptr[List], data: ptr) => ptr[List];
-    @shared def insert: @expname[g_list_insert] function (list: ptr[List], data: ptr, position: Int) => ptr[List];
-    @shared def insertBefore: @expname[g_list_insert_before] function (list: ptr[List], sibling: ptr[List], data: ptr) => ptr[List];
-    @shared def insertSorted: @expname[g_list_insert_sorted_with_data] function (list: ptr[List], data: ptr, fn: CompareDataFunc, userData: ptr) => ptr[List];
-    @shared def remove: @expname[g_list_remove] function (list: ptr[List], data: ptr) => ptr[List];
-    @shared def removeLink: @expname[g_list_remove_link] function (list: ptr[List], link: ptr[List]) => ptr[List];
-    @shared def deleteLink: @expname[g_list_delete_link] function (list: ptr[List], link: ptr[List]) => ptr[List];
-    @shared def removeAll: @expname[g_list_remove_all] function (list: ptr[List], data: ptr) => ptr[List];
-    @shared def free: @expname[g_list_free] function (list: ptr[List]);
-    @shared def freeFull: @expname[g_list_free_full] function (list: ptr[List], fn: DestroyNotify);
-    @shared def alloc: @expname[g_list_alloc] function () => ptr[List];
-    @shared def freeOne: @expname[g_list_free_1] function (list: ptr[List]);
-    @shared def getLength: @expname[g_list_length] function (list: ptr[List]) => Int;
-    @shared def copy: @expname[g_list_copy] function (list: ptr[List]) => ptr[List];
-    @shared def copyDeep: @expname[g_list_copy_deep] function (list: ptr[List], fn: CopyFunc, userData: ptr) => ptr[List];
-    @shared def reverse: @expname[g_list_reverse] function (list: ptr[List]) => ptr[List];
-    @shared def sort: @expname[g_list_sort_with_data] function (list: ptr[List], fn: CompareDataFunc, userData: ptr) => ptr[List];
-    @shared def concat: @expname[g_list_concat] function (list1: ptr[List], list2: ptr[List]) => ptr[List];
-    @shared def foreach: @expname[g_list_foreach] function (list: ptr[List], fn: Func, userData: ptr);
-    @shared def getFirst: @expname[g_list_first] function (list: ptr[List]) => ptr[List];
-    @shared def getLast: @expname[g_list_last] function (list: ptr[List]) => ptr[List];
-    @shared def getNth: @expname[g_list_nth] function (list: ptr[List], n: Word) => ptr[List];
-    @shared def find: @expname[g_list_find] function (list: ptr[List], data: ptr) => ptr[List];
-    @shared def findCustom: @expname[g_list_find_custom] function (list: ptr[List], data: ptr, fn: CompareFunc) => ptr[List];
-    @shared def getPosition: @expname[g_list_position] function (list: ptr[List], link: ptr[List]) => Int;
-    @shared def getIndex: @expname[g_list_index] function (list: ptr[List], data: ptr) => Int;
+
+    @shared
+    @expname[g_list_append]
+    func append (list: ptr[List], data: ptr) => ptr[List];
+
+    @shared
+    @expname[g_list_prepend]
+    func prepend (list: ptr[List], data: ptr) => ptr[List];
+
+    @shared
+    @expname[g_list_insert]
+    func insert (list: ptr[List], data: ptr, position: Int) => ptr[List];
+
+    @shared
+    @expname[g_list_insert_before]
+    func insertBefore (list: ptr[List], sibling: ptr[List], data: ptr) => ptr[List];
+
+    @shared
+    @expname[g_list_insert_sorted_with_data]
+    func insertSorted (list: ptr[List], data: ptr, fn: CompareDataFunc, userData: ptr) => ptr[List];
+
+    @shared
+    @expname[g_list_remove]
+    func remove (list: ptr[List], data: ptr) => ptr[List];
+
+    @shared
+    @expname[g_list_remove_link]
+    func removeLink (list: ptr[List], link: ptr[List]) => ptr[List];
+
+    @shared
+    @expname[g_list_delete_link]
+    func deleteLink (list: ptr[List], link: ptr[List]) => ptr[List];
+
+    @shared
+    @expname[g_list_remove_all]
+    func removeAll (list: ptr[List], data: ptr) => ptr[List];
+
+    @shared
+    @expname[g_list_free]
+    func free (list: ptr[List]);
+
+    @shared
+    @expname[g_list_free_full]
+    func freeFull (list: ptr[List], fn: DestroyNotify);
+
+    @shared
+    @expname[g_list_alloc]
+    func alloc () => ptr[List];
+
+    @shared
+    @expname[g_list_free_1]
+    func freeOne (list: ptr[List]);
+
+    @shared
+    @expname[g_list_length]
+    func getLength (list: ptr[List]) => Int;
+
+    @shared
+    @expname[g_list_copy]
+    func copy (list: ptr[List]) => ptr[List];
+
+    @shared
+    @expname[g_list_copy_deep]
+    func copyDeep (list: ptr[List], fn: CopyFunc, userData: ptr) => ptr[List];
+
+    @shared
+    @expname[g_list_reverse]
+    func reverse (list: ptr[List]) => ptr[List];
+
+    @shared
+    @expname[g_list_sort_with_data]
+    func sort (list: ptr[List], fn: CompareDataFunc, userData: ptr) => ptr[List];
+
+    @shared
+    @expname[g_list_concat]
+    func concat (list1: ptr[List], list2: ptr[List]) => ptr[List];
+
+    @shared
+    @expname[g_list_foreach]
+    func foreach (list: ptr[List], fn: Func, userData: ptr);
+
+    @shared
+    @expname[g_list_first]
+    func getFirst (list: ptr[List]) => ptr[List];
+
+    @shared
+    @expname[g_list_last]
+    func getLast (list: ptr[List]) => ptr[List];
+
+    @shared
+    @expname[g_list_nth]
+    func getNth (list: ptr[List], n: Word) => ptr[List];
+
+    @shared
+    @expname[g_list_find]
+    func find (list: ptr[List], data: ptr) => ptr[List];
+
+    @shared
+    @expname[g_list_find_custom]
+    func findCustom (list: ptr[List], data: ptr, fn: CompareFunc) => ptr[List];
+
+    @shared
+    @expname[g_list_position]
+    func getPosition (list: ptr[List], link: ptr[List]) => Int;
+
+    @shared
+    @expname[g_list_index]
+    func getIndex (list: ptr[List], data: ptr) => Int;
   };
 };
 
