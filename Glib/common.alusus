@@ -1,12 +1,16 @@
 @merge def Glib: module
 {
-  @expname[g_signal_connect_data]
-  func connectSignal(
-    instance: ptr, detailedSignal: ptr[array[Char]], handler: ptr[func], data: ptr,
-    destroyData: ptr[func], flags: Int
-  ): Word[64];
+  type Object {
+    @expname[g_signal_connect_data]
+    func connectSignal(
+      detailedSignal: ptr[array[Char]], handler: ptr[func], data: ptr,
+      destroyData: ptr[func], flags: Int
+    ): Word[64];
+  }
 
-  @expname[g_object_unref] func unref(p: ptr);
+  macro cb [f] f~ptr~cast[ptr[function]];
+
+  @expname[g_object_unref] func unref(p: ref[Object]);
 
   def Func: alias ptr[func (data: ptr, userData: ptr)];
   def CompareFunc: alias ptr[func (ptr, ptr)=>Int];
@@ -51,111 +55,84 @@
     def t: Type;
     def v: array[Int[64], 2];
 
-    @shared
     @expname[g_value_init]
-    func init(value: ptr[Value], t: Type): ptr[Value];
+    func init(t: Type): ptr[Value];
 
-    @shared
     @expname[g_value_set_boolean]
-    func setBool(value: ptr[Value], v: Bool);
+    func setBool(v: Bool);
 
-    @shared
     @expname[g_value_get_boolean]
-    func getBool(value: ptr[Value]): Bool;
+    func getBool(): Bool;
 
-    @shared
     @expname[g_value_set_char]
-    func setChar(value: ptr[Value], c: Char);
+    func setChar(c: Char);
 
-    @shared
     @expname[g_value_get_char]
-    func getChar(value: ptr[Value]): Char;
+    func getChar(): Char;
 
-    @shared
     @expname[g_value_set_int]
-    func setInt(value: ptr[Value], i: Int);
+    func setInt(i: Int);
 
-    @shared
     @expname[g_value_get_int]
-    func getInt(value: ptr[Value]): Int;
+    func getInt(): Int;
 
-    @shared
     @expname[g_value_set_uint]
-    func setUint(value: ptr[Value], i: Word);
+    func setUint(i: Word);
 
-    @shared
     @expname[g_value_get_uint]
-    func getUint(value: ptr[Value]): Word;
+    func getUint(): Word;
 
-    @shared
     @expname[g_value_set_int64]
-    func setInt64(value: ptr[Value], i: Int[64]);
+    func setInt64(i: Int[64]);
 
-    @shared
     @expname[g_value_get_int64]
-    func getInt64(value: ptr[Value]): Int[64];
+    func getInt64(): Int[64];
 
-    @shared
     @expname[g_value_set_uint64]
-    func setUint64(value: ptr[Value], i: Word[64]);
+    func setUint64(i: Word[64]);
 
-    @shared
     @expname[g_value_get_uint64]
-    func getUint64(value: ptr[Value]): Word[64];
+    func getUint64(): Word[64];
 
-    @shared
     @expname[g_value_set_float]
-    func setFloat(value: ptr[Value], f: Float);
+    func setFloat(f: Float);
 
-    @shared
     @expname[g_value_get_float]
-    func getFloat(value: ptr[Value]): Float;
+    func getFloat(): Float;
 
-    @shared
     @expname[g_value_set_double]
-    func setDouble(value: ptr[Value], d: Float[64]);
+    func setDouble(d: Float[64]);
 
-    @shared
     @expname[g_value_get_double]
-    func getDouble(value: ptr[Value]): Float[64];
+    func getDouble(): Float[64];
 
-    @shared
     @expname[g_value_set_string]
-    func setString(value: ptr[Value], s: ptr[array[Char]]);
+    func setString(s: ptr[array[Char]]);
 
-    @shared
     @expname[g_value_set_static_string]
-    func setStaticString(value: ptr[Value], s: ptr[array[Char]]);
+    func setStaticString(s: ptr[array[Char]]);
 
-    @shared
     @expname[g_value_get_string]
-    func getString(value: ptr[Value]): ptr[array[Char]];
+    func getString(): ptr[array[Char]];
 
-    @shared
     @expname[g_value_set_pointer]
-    func setPointer(value: ptr[Value], p: ptr);
+    func setPointer(p: ptr);
 
-    @shared
     @expname[g_value_get_pointer]
-    func getPointer(value: ptr[Value]): ptr;
+    func getPointer(): ptr;
   };
 
-  type Timeout {
-    @shared
+  module Timeout {
     @expname[g_timeout_add]
     func add(mileseconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
 
-    @shared
     @expname[g_timeout_add_full]
     func addFull(priority: int, mileseconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
 
-    @shared
     @expname[g_timeout_add_seconds]
     func addSeconds(seconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
 
-    @shared
     @expname[g_timeout_add_seconds_full]
     func addSeconds(priority: int, seconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
   };
 };
-

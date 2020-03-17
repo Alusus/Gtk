@@ -8,113 +8,87 @@ import "./common.alusus";
     def next: ptr[List];
     def prev: ptr[List];
 
-    @shared
     @expname[g_list_append]
-    func append (list: ptr[List], data: ptr) => ptr[List];
+    func append (data: ptr) => ref[List];
 
-    @shared
     @expname[g_list_prepend]
-    func prepend (list: ptr[List], data: ptr) => ptr[List];
+    func prepend (data: ptr) => ref[List];
 
-    @shared
     @expname[g_list_insert]
-    func insert (list: ptr[List], data: ptr, position: Int) => ptr[List];
+    func insert (data: ptr, position: Int) => ref[List];
 
-    @shared
     @expname[g_list_insert_before]
-    func insertBefore (list: ptr[List], sibling: ptr[List], data: ptr) => ptr[List];
+    func insertBefore (sibling: ref[List], data: ptr) => ref[List];
 
-    @shared
     @expname[g_list_insert_sorted_with_data]
-    func insertSorted (list: ptr[List], data: ptr, fn: CompareDataFunc, userData: ptr) => ptr[List];
+    func insertSorted (data: ptr, fn: CompareDataFunc, userData: ptr) => ref[List];
 
-    @shared
     @expname[g_list_remove]
-    func remove (list: ptr[List], data: ptr) => ptr[List];
+    func remove (data: ptr) => ref[List];
 
-    @shared
     @expname[g_list_remove_link]
-    func removeLink (list: ptr[List], link: ptr[List]) => ptr[List];
+    func removeLink (link: ref[List]) => ref[List];
 
-    @shared
     @expname[g_list_delete_link]
-    func deleteLink (list: ptr[List], link: ptr[List]) => ptr[List];
+    func deleteLink (link: ref[List]) => ref[List];
 
-    @shared
     @expname[g_list_remove_all]
-    func removeAll (list: ptr[List], data: ptr) => ptr[List];
+    func removeAll (data: ptr) => ref[List];
 
-    @shared
     @expname[g_list_free]
-    func free (list: ptr[List]);
+    func free ();
 
-    @shared
     @expname[g_list_free_full]
-    func freeFull (list: ptr[List], fn: DestroyNotify);
+    func freeFull (fn: DestroyNotify);
 
     @shared
     @expname[g_list_alloc]
-    func alloc () => ptr[List];
+    func alloc () => ref[List];
 
-    @shared
     @expname[g_list_free_1]
-    func freeOne (list: ptr[List]);
+    func freeOne ();
 
-    @shared
     @expname[g_list_length]
-    func getLength (list: ptr[List]) => Int;
+    func getLength () => Int;
 
-    @shared
     @expname[g_list_copy]
-    func copy (list: ptr[List]) => ptr[List];
+    func copy () => ref[List];
 
-    @shared
     @expname[g_list_copy_deep]
-    func copyDeep (list: ptr[List], fn: CopyFunc, userData: ptr) => ptr[List];
+    func copyDeep (fn: CopyFunc, userData: ptr) => ref[List];
 
-    @shared
     @expname[g_list_reverse]
-    func reverse (list: ptr[List]) => ptr[List];
+    func reverse () => ref[List];
 
-    @shared
     @expname[g_list_sort_with_data]
-    func sort (list: ptr[List], fn: CompareDataFunc, userData: ptr) => ptr[List];
+    func sort (fn: CompareDataFunc, userData: ptr) => ref[List];
 
     @shared
     @expname[g_list_concat]
-    func concat (list1: ptr[List], list2: ptr[List]) => ptr[List];
+    func concat (list1: ref[List], list2: ref[List]) => ref[List];
 
-    @shared
     @expname[g_list_foreach]
-    func foreach (list: ptr[List], fn: Func, userData: ptr);
+    func foreach (fn: Func, userData: ptr);
 
-    @shared
     @expname[g_list_first]
-    func getFirst (list: ptr[List]) => ptr[List];
+    func getFirst () => ref[List];
 
-    @shared
     @expname[g_list_last]
-    func getLast (list: ptr[List]) => ptr[List];
+    func getLast () => ref[List];
 
-    @shared
     @expname[g_list_nth]
-    func getNth (list: ptr[List], n: Word) => ptr[List];
+    func getNth (n: Word) => ref[List];
 
-    @shared
     @expname[g_list_find]
-    func find (list: ptr[List], data: ptr) => ptr[List];
+    func find (data: ptr) => ref[List];
 
-    @shared
     @expname[g_list_find_custom]
-    func findCustom (list: ptr[List], data: ptr, fn: CompareFunc) => ptr[List];
+    func findCustom (data: ptr, fn: CompareFunc) => ref[List];
 
-    @shared
     @expname[g_list_position]
-    func getPosition (list: ptr[List], link: ptr[List]) => Int;
+    func getPosition (link: ref[List]) => Int;
 
-    @shared
     @expname[g_list_index]
-    func getIndex (list: ptr[List], data: ptr) => Int;
+    func getIndex (data: ptr) => Int;
   };
 };
-

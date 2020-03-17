@@ -1,117 +1,98 @@
 @deps["libgtk-3.so.0", "libgobject-2.0.so.0", "libgio-2.0.so.0"] @merge def Gtk: module
 {
-  def Callback: alias ptr[function (widget: ptr[Widget], data: ptr)];
+  def Callback: alias ptr[function (widget: ref[Widget], data: ptr)];
 
   def App: type
   {
-    @shared
-    @expname[gtk_application_new]
-    func new (appId: ptr[array[Char]], flags: Int) => ptr[App];
+    @injection def glibObj: Glib.Object;
 
     @shared
+    @expname[gtk_application_new]
+    func new (appId: ptr[array[Char]], flags: Int) => ref[App];
+
     @expname[g_application_run]
-    func exec (app: ptr[App], argc: Int, argv: ptr[array[ptr[array[Char]]]]) => Int;
+    func exec (argc: Int, argv: ptr[array[ptr[array[Char]]]]) => Int;
   };
 
   def Widget: type
   {
+    @injection def glibObj: Glib.Object;
+
     @shared
     @expname[gtk_widget_destroy]
-    func destroy (widget: ptr[Widget]);
+    func destroy (widget: ref[Widget]);
 
-    @shared
     @expname[gtk_widget_show]
-    func show (widget: ptr[Widget]);
+    func show ();
 
-    @shared
     @expname[gtk_widget_show_now]
-    func showNow (widget: ptr[Widget]);
+    func showNow ();
 
-    @shared
     @expname[gtk_widget_hide]
-    func hide (widget: ptr[Widget]);
+    func hide ();
 
-    @shared
     @expname[gtk_widget_show_all]
-    func showAll (widget: ptr[Widget]);
+    func showAll ();
 
-    @shared
     @expname[gtk_widget_set_visible]
-    func setVisible (widget: ptr[Widget], visible: Bool);
+    func setVisible (visible: Bool);
   };
 
   def Container: type
   {
-    def widget: Widget;
+    @injection def widget: Widget;
 
-    @shared
     @expname[gtk_container_add]
-    func add (container: ptr[Container], widget: ptr[Widget]);
+    func add (widget: ref[Widget]);
 
-    @shared
     @expname[gtk_container_remove]
-    func remove (container: ptr[Container], widget: ptr[Widget]);
+    func remove (widget: ref[Widget]);
 
-    @shared
     @expname[gtk_container_add_with_properties]
-    func addWithProperties (container: ptr[Container], widget: ptr[Widget], firstPropName: ptr[array[Char]], ...any);
+    func addWithProperties (widget: ref[Widget], firstPropName: ptr[array[Char]], ...any);
 
-    @shared
     @expname[gtk_container_foreach]
-    func foreach (container: ptr[Container], callback: Callback, data: ptr);
+    func foreach (callback: Callback, data: ptr);
 
-    @shared
     @expname[gtk_container_get_children]
-    func getChildren (container: ptr[Container]) => ptr[Glib.List];
+    func getChildren () => ref[Glib.List];
 
-    @shared
     @expname[gtk_container_get_focus_child]
-    func getFocusChild (container: ptr[Container]) => ptr[Widget];
+    func getFocusChild () => ref[Widget];
 
-    @shared
     @expname[gtk_container_set_focus_child]
-    func setFocusChild (container: ptr[Container], child: ptr[Widget]);
+    func setFocusChild (child: ref[Widget]);
 
-    @shared
     @expname[gtk_container_child_get]
-    func getChildProps (container: ptr[Container], child: ptr[Widget], firstPropName: ptr[array[Char]], ...any);
+    func getChildProps (child: ref[Widget], firstPropName: ptr[array[Char]], ...any);
 
-    @shared
     @expname[gtk_container_child_set]
-    func setChildProps (container: ptr[Container], child: ptr[Widget], firstPropName: ptr[array[Char]], ...any);
+    func setChildProps (child: ref[Widget], firstPropName: ptr[array[Char]], ...any);
 
-    @shared
     @expname[gtk_container_get_border_width]
-    func getBorderWidth (container: ptr[Container]) => Word;
+    func getBorderWidth () => Word;
 
-    @shared
     @expname[gtk_container_set_border_width]
-    func setBorderWidth (container: ptr[Container], width: Word);
+    func setBorderWidth (width: Word);
   };
 
   def TextBuffer: type
   {
     @shared
     @expname[gtk_text_buffer_new]
-    func new (table: ptr) => ptr[TextBuffer];
+    func new (table: ptr) => ref[TextBuffer];
 
-    @shared
     @expname[gtk_text_buffer_set_text]
-    func setText (buf: ptr[TextBuffer], text: ptr[array[Char]], len: Int);
+    func setText (text: ptr[array[Char]], len: Int);
 
-    @shared
     @expname[gtk_text_buffer_get_text]
-    func getText (
-      buf: ptr[TextBuffer], start: ptr[TextIter], end: ptr[TextIter], includeHidden: Bool
-    ): ptr[array[Char]];
+    func getText (start: ref[TextIter], end: ref[TextIter], includeHidden: Bool): ptr[array[Char]];
 
-    @shared
     @expname[gtk_text_buffer_get_start_iter]
-    func getStartIter (buf: ptr[TextBuffer], ptr[TextIter]);
+    func getStartIter (ref[TextIter]);
 
-    @shared
     @expname[gtk_text_buffer_get_end_iter]
-    func getEndIter (buf: ptr[TextBuffer], ptr[TextIter]);
+    func getEndIter (ref[TextIter]);
   };
 
   def TextIter: type
@@ -135,28 +116,25 @@
 
   def Editable: type
   {
-    @shared
     @expname[gtk_editable_get_chars]
-    func getChars (editable: ptr[Editable], start: Int, end: Int) => ptr[array[Char]];
+    func getChars (start: Int, end: Int) => ptr[array[Char]];
   };
 
   def Builder: type
   {
     @shared
     @expname[gtk_builder_new]
-    func new(): ptr[Builder];
+    func new(): ref[Builder];
 
     @shared
     @expname[gtk_builder_new]
-    func newFromFile(filename: ptr[array[Char]]): ptr[Builder];
+    func newFromFile(filename: ptr[array[Char]]): ref[Builder];
 
     @shared
     @expname[gtk_builder_new_from_resource]
-    func newFromResource(resource_path: ptr[array[Char]]): ptr[Builder];
+    func newFromResource(resource_path: ptr[array[Char]]): ref[Builder];
 
-    @shared
     @expname[gtk_builder_connect_signals]
-    func connectSignals(builder: ptr[Builder], userData: ptr): Void;
+    func connectSignals(userData: ptr): Void;
   };
 };
-
