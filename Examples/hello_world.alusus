@@ -4,76 +4,69 @@ import "Build.alusus";
 
 def HelloWorld: module
 {
-  def window: ref[Gtk.AppWindow];
+    def window: ref[Gtk.AppWindow];
 
-  @expname[main]
-  func start {
-    def app: ref[Gtk.App];
-    def status: Int;
+    @expname[main]
+    func start {
+        def status: Int;
 
-    app~ptr = Gtk.App.new("org.alusus.gtk-hello-world", 0)~ptr;
-    app.connectSignal(Gtk.Signal.ACTIVATE, Glib.cb[activate], 0, 0, 0);
-    status = app.exec(0, 0);
-    Glib.unref(app);
-  };
+        def app: ref[Gtk.App](Gtk.App.new("org.alusus.gtk-hello-world", 0));
+        app.connectSignal(Gtk.Signal.ACTIVATE, Glib.cb[activate], 0, 0, 0);
+        status = app.exec(0, 0);
+        Glib.unref(app);
+    };
 
-  func activate (app: ref[Gtk.App], data: ptr): Void {
-    def box: ref[Gtk.Box];
-    def label: ref[Gtk.Label];
-    def buttonBox: ref[Gtk.ButtonBox];
-    def aboutButton: ref[Gtk.Button];
-    def quitButton: ref[Gtk.Button];
+    func activate (app: ref[Gtk.App], data: ptr): Void {
 
-    window~ptr = Gtk.AppWindow.new(app)~ptr;
-    window.setTitle("Alusus GTK Hello World");
-    window.setDefaultSize(480, 320);
+        window~ptr = Gtk.AppWindow.new(app)~ptr;
+        window.setTitle("Alusus GTK Hello World");
+        window.setDefaultSize(480, 320);
 
-    box~ptr = Gtk.Box.new(Gtk.Orientation.VERTICAL, 20)~ptr;
+        def box: ref[Gtk.Box](Gtk.Box.new(Gtk.Orientation.VERTICAL, 20));
 
-    label~ptr = Gtk.Label.new("Hello World!")~ptr;
+        def label: ref[Gtk.Label](Gtk.Label.new("Hello World!"));
 
-    buttonBox~ptr = Gtk.ButtonBox.new(Gtk.Orientation.HORIZONTAL)~ptr;
-    buttonBox.setLayout(Gtk.ButtonBoxStyle.SPREAD);
+        def buttonBox: ref[Gtk.ButtonBox](Gtk.ButtonBox.new(Gtk.Orientation.HORIZONTAL));
+        buttonBox.setLayout(Gtk.ButtonBoxStyle.SPREAD);
 
-    aboutButton~ptr = Gtk.Button.newWithLabel("About")~ptr;
-    aboutButton.connectSignal(Gtk.Signal.CLICKED, Glib.cb[onAboutClicked], 0, 0, 0);
-    buttonBox.add(aboutButton);
+        def aboutButton: ref[Gtk.Button](Gtk.Button.newWithLabel("About"));
+        aboutButton.connectSignal(Gtk.Signal.CLICKED, Glib.cb[onAboutClicked], 0, 0, 0);
+        buttonBox.add(aboutButton);
 
-    quitButton~ptr = Gtk.Button.newWithLabel("Quit")~ptr;
-    quitButton.connectSignal(Gtk.Signal.CLICKED, Glib.cb[onQuitClicked], 0, 0, 0);
-    buttonBox.add(quitButton);
+        def quitButton: ref[Gtk.Button](Gtk.Button.newWithLabel("Quit"));
+        quitButton.connectSignal(Gtk.Signal.CLICKED, Glib.cb[onQuitClicked], 0, 0, 0);
+        buttonBox.add(quitButton);
 
-    box.packStart(label, 1, 0, 0);
-    box.packStart(buttonBox, 1, 0, 0);
+        box.packStart(label, 1, 0, 0);
+        box.packStart(buttonBox, 1, 0, 0);
 
-    window.add(box);
+        window.add(box);
 
-    window.showAll();
-  };
+        window.showAll();
+    };
 
-  func onAboutClicked (widget: ref[Gtk.Widget], data: ptr): Void {
-    def dialog: ref[Gtk.MessageDialog];
-    dialog~ptr = Gtk.MessageDialog.new(
-      window, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.CLOSE,
-      "Alusus GTK Hello World.\nauthor: Sarmad Abdullah"
-    )~ptr;
-    dialog.exec();
-    Gtk.Widget.destroy(dialog);
-  };
+    func onAboutClicked (widget: ref[Gtk.Widget], data: ptr): Void {
+        def dialog: ref[Gtk.MessageDialog](Gtk.MessageDialog.new(
+            window, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.CLOSE,
+            "Alusus GTK Hello World.\nauthor: Sarmad Abdullah"
+        ));
+        dialog.exec();
+        Gtk.Widget.destroy(dialog);
+    };
 
-  func onQuitClicked (widget: ref[Gtk.Widget], data: ptr): Void {
-    Gtk.Widget.destroy(window);
-  };
+    func onQuitClicked (widget: ref[Gtk.Widget], data: ptr): Void {
+        Gtk.Widget.destroy(window);
+    };
 };
 
 if Process.argCount < 3 {
-  HelloWorld.start();
+    HelloWorld.start();
 } else {
-  def exe: ptr[Build.Exe] = Build.Exe.new(HelloWorld.start~ast, Process.args~cnt(Process.argCount - 1));
-  Build.Exe.addDependency(exe, Gtk~ast);
-  if Build.Exe.generate(exe) {
-    Srl.Console.print("Build complete.\n");
-  } else {
-    Srl.Console.print("Build failed.\n");
-  };
+    def exe: ptr[Build.Exe] = Build.Exe.new(HelloWorld.start~ast, Process.args~cnt(Process.argCount - 1));
+    Build.Exe.addDependency(exe, Gtk~ast);
+    if Build.Exe.generate(exe) {
+        Srl.Console.print("Build complete.\n");
+    } else {
+        Srl.Console.print("Build failed.\n");
+    };
 };

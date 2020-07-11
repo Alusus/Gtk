@@ -15,7 +15,6 @@ def SimpleTimer: module
     def isPaused: bool;
 
     func start (): Void {
-        def app: ref[Gtk.App];
         def status: Int;
         secondsInTimer = 0;
         isPaused = false;
@@ -23,20 +22,20 @@ def SimpleTimer: module
         // start timer
         Glib.Timeout.addSeconds(1, timer~ptr, 0);
 
-        app~ptr = Gtk.App.new("org.alusus.simple-timer", 0)~ptr;
+        def app: ref[Gtk.App](Gtk.App.new("org.alusus.simple-timer", 0));
         app.connectSignal(Gtk.Signal.ACTIVATE, Glib.cb[applicationActivated], 0, 0, 0);
         status = app.exec(0, 0);
         Glib.unref(app);
     };
 
     func applicationActivated (app: ref[Gtk.App], data: ptr): Void {
-        def box: ref[Gtk.Box]; box~ptr = Gtk.Box.new(Gtk.Orientation.VERTICAL, 20)~ptr;
-        def timer: ref[Gtk.Box]; timer~ptr = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)~ptr;
-        def label: ref[Gtk.Label]; label~ptr = Gtk.Label.new("Timer")~ptr;
-        def buttonBox: ref[Gtk.ButtonBox]; buttonBox~ptr = Gtk.ButtonBox.new(Gtk.Orientation.HORIZONTAL)~ptr;
-        def resumeBtn: ref[Gtk.Button]; resumeBtn~ptr = Gtk.Button.newWithLabel("Resume")~ptr;
-        def pauseBtn: ref[Gtk.Button]; pauseBtn~ptr = Gtk.Button.newWithLabel("Pause")~ptr;
-        def resetBtn: ref[Gtk.Button]; resetBtn~ptr = Gtk.Button.newWithLabel("Reset")~ptr;
+        def box: ref[Gtk.Box](Gtk.Box.new(Gtk.Orientation.VERTICAL, 20));
+        def timer: ref[Gtk.Box](Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0));
+        def label: ref[Gtk.Label](Gtk.Label.new("Timer"));
+        def buttonBox: ref[Gtk.ButtonBox](Gtk.ButtonBox.new(Gtk.Orientation.HORIZONTAL));
+        def resumeBtn: ref[Gtk.Button](Gtk.Button.newWithLabel("Resume"));
+        def pauseBtn: ref[Gtk.Button](Gtk.Button.newWithLabel("Pause"));
+        def resetBtn: ref[Gtk.Button](Gtk.Button.newWithLabel("Reset"));
 
         hours~ptr = Gtk.Label.new("00")~ptr;
         minutes~ptr = Gtk.Label.new("00")~ptr;
