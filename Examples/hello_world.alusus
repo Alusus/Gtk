@@ -62,9 +62,9 @@ def HelloWorld: module
 if Process.argCount < 3 {
     HelloWorld.start();
 } else {
-    def exe: ptr[Build.Exe] = Build.Exe.new(HelloWorld.start~ast, Process.args~cnt(Process.argCount - 1));
-    Build.Exe.addDependency(exe, Gtk~ast);
-    if Build.Exe.generate(exe) {
+    def exe:Build.Exe(HelloWorld.start~ast, Process.args~cnt(Process.argCount - 1));
+    exe.addDependency(Gtk~ast);
+    if exe.generate() {
         Srl.Console.print("Build complete.\n");
     } else {
         Srl.Console.print("Build failed.\n");
