@@ -2,79 +2,67 @@
 {
   def Window: type
   {
-    def container: Container;
+    @injection def container: Container;
 
-    @shared
     @expname[gtk_window_set_title]
-    func setTitle (window: ptr[Window], title: ptr[array[Char]]);
+    func setTitle (title: ptr[array[Char]]);
 
-    @shared
     @expname[gtk_window_set_titlebar]
-    func setTitlebar (window: ptr[Window], titlebar: ptr[Widget]);
+    func setTitlebar (titlebar: ref[Widget]);
 
-    @shared
     @expname[gtk_window_set_resizable]
-    func setResizable (window: ptr[Window], resiable: Bool);
+    func setResizable (resiable: Bool);
 
-    @shared
     @expname[gtk_window_set_modal]
-    func setModal (window: ptr[Window], modal: Bool);
+    func setModal (modal: Bool);
 
-    @shared
     @expname[gtk_window_set_default_size]
-    func setDefaultSize (window: ptr[Window], width: Int, height: Int);
+    func setDefaultSize (width: Int, height: Int);
 
-    @shared
     @expname[gtk_window_set_transient_for]
-    func setTransientFor (window: ptr[Window], parent: ptr[Window]);
+    func setTransientFor (parent: ref[Window]);
 
-    @shared
     @expname[gtk_window_set_destroy_with_parent]
-    func setDestroyWithParent (window: ptr[Window], setting: Bool);
+    func setDestroyWithParent (setting: Bool);
 
-    @shared
     @expname[gtk_window_is_active]
-    func isActive (window: ptr[Window]) => Bool;
+    func isActive () => Bool;
 
-    @shared
     @expname[gtk_window_get_focus]
-    func getFocus (window: ptr[Window]) => ptr[Widget];
+    func getFocus () => ref[Widget];
 
-    @shared
     @expname[gtk_window_set_focus]
-    func setFocus (window: ptr[Window], widget: ptr[Widget]);
+    func setFocus (widget: ref[Widget]);
 
-    @shared
     @expname[gtk_window_close]
-    func close (window: ptr[Window]);
+    func close ();
   };
 
   def AppWindow: type
   {
-    def window: Window;
+    @injection def window: Window;
 
     @shared
     @expname[gtk_application_window_new]
-    func new (app: ptr[App]) => ptr[AppWindow];
+    func new (app: ref[App]) => ref[AppWindow];
   };
 
   def Dialog: type
   {
-    def window: Window;
+    @injection def window: Window;
 
-    @shared
     @expname[gtk_dialog_run]
-    func exec (dialog: ptr[Dialog]) => Int;
+    func exec () => Int;
   };
 
   def MessageDialog: type
   {
-    def dialog: Dialog;
+    @injection def dialog: Dialog;
 
     @shared
     @expname[gtk_message_dialog_new]
     func new (
-      parent: ptr[Window], flags: Int, dlgType: Int, buttons: Int, msg: ptr[array[Char]], args: ...any
-    ) => ptr[MessageDialog];
+      parent: ref[Window], flags: Int, dlgType: Int, buttons: Int, msg: ptr[array[Char]], args: ...any
+    ) => ref[MessageDialog];
   };
 };

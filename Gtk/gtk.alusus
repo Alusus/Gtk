@@ -1,4 +1,4 @@
-import "globals.alusus";
+import "Srl/srl";
 import "libgtk-3.so.0";
 import "../Glib/List.alusus";
 import "./common.alusus";

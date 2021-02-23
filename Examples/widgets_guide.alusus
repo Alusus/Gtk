@@ -5,254 +5,230 @@ import "Build.alusus";
 
 module WidgetGuide
 {
-  def window: ptr[Gtk.AppWindow];
+    def window: ref[Gtk.AppWindow];
 
-  @expname[main]
-  function start
-  {
-    def app: ptr[Gtk.App];
-    def status: Int;
+    @expname[main]
+    function start
+    {
+        def status: Int;
 
-    app = Gtk.App.new("org.alusus.gtk-widget-guide", 0);
-    Glib.connectSignal(app, Gtk.Signal.ACTIVATE, activate~ptr~cast[ptr[function]], 0, 0, 0);
-    status = Gtk.App.exec(app, 0, 0);
-    Glib.unref(app);
-  };
-
-  function activate (app: ptr[Gtk.App], data: ptr)
-  {
-    // Create the main window.
-    window = Gtk.AppWindow.new(app);
-    Gtk.Window.setTitle(window, "Alusus GTK Widgets Guide");
-    Gtk.Window.setDefaultSize(window, 640, 480);
-
-    // Create the header bar with menu, About, and Quit buttons.
-    Gtk.Window.setTitlebar(window, createHeaderBar());
-
-    // Create a paned element.
-    def paned: ptr[Gtk.Paned];
-    paned = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL);
-    Gtk.Container.add(window, paned);
-    Gtk.Paned.setPosition(paned, 150);
-
-    // Create a box for the second side of the pane.
-    def box: ptr[Gtk.Box];
-    box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 10);
-    Gtk.Paned.pack2(paned, box, 1, 1);
-
-    // Fill the second side of the paned.
-    def label: ptr[Gtk.Label];
-    def textBuffer: ptr[Gtk.TextBuffer];
-    label = createLogoAndLabel(box);
-    createEntry(box, label);
-    textBuffer = createTextView(box);
-    createTextViewButtons(box, textBuffer);
-    createToggleButton(box, label);
-    createCheckButton(box, label);
-
-    // Fill the first side of the paned.
-    createListBox(paned, label);
-
-    // Show the window.
-    Gtk.Widget.showAll(window);
-  };
-
-  function createHeaderBar () => ptr[Gtk.HeaderBar]
-  {
-    def headerBar: ptr[Gtk.HeaderBar];
-    headerBar = Gtk.HeaderBar.new();
-    Gtk.HeaderBar.setTitle(headerBar, "Alusus GTK Widgets Guide");
-
-    def aboutButton: ptr[Gtk.Button];
-    aboutButton = Gtk.Button.newWithLabel("About");
-    Glib.connectSignal(aboutButton, Gtk.Signal.CLICKED, onAboutClicked~ptr~cast[ptr[function]], 0, 0, 0);
-    Gtk.HeaderBar.packStart(headerBar, aboutButton);
-
-    def quitButton: ptr[Gtk.Button];
-    quitButton = Gtk.Button.newWithLabel("Quit");
-    Glib.connectSignal(quitButton, Gtk.Signal.CLICKED, onQuitClicked~ptr~cast[ptr[function]], 0, 0, 0);
-    Gtk.HeaderBar.packEnd(headerBar, quitButton);
-
-    createMenu(headerBar);
-
-    return headerBar;
-  };
-
-  function createMenu (headerBar: ptr[Gtk.HeaderBar])
-  {
-    def menu: ptr[Gtk.Menu];
-    menu = Gtk.Menu.new();
-
-    def item: ptr[Gtk.MenuItem];
-    item = Gtk.MenuItem.new("About");
-    Glib.connectSignal(item, Gtk.Signal.ACTIVATE, onAboutClicked~ptr~cast[ptr[func]], 0, 0, 0);
-    Gtk.MenuShell.append(menu, item);
-    Gtk.Widget.show(item);
-    item = Gtk.MenuItem.new("Quit");
-    Glib.connectSignal(item, Gtk.Signal.ACTIVATE, onQuitClicked~ptr~cast[ptr[func]], 0, 0, 0);
-    Gtk.MenuShell.append(menu, item);
-    Gtk.Widget.show(item);
-
-    def button: ptr[Gtk.MenuButton];
-    button = Gtk.MenuButton.new();
-    Gtk.MenuButton.setPopup(button, menu);
-    Gtk.HeaderBar.packEnd(headerBar, button);
-  };
-
-  function createListBox (paned: ptr[Gtk.Paned], label: ptr[Gtk.Label])
-  {
-    def listBox: ptr[Gtk.ListBox];
-    listBox = Gtk.ListBox.new();
-    Gtk.Paned.pack1(paned, listBox, 0, 1);
-
-    def str: array[Char, 100];
-    def i: Int;
-    for i = 1, i <= 10, ++i {
-      Srl.String.assign(str~ptr, "Row %d", i);
-      def label: ptr[Gtk.Label];
-      label = Gtk.Label.new(str~ptr);
-      Gtk.ListBox.insert(listBox, label, -1);
+        def app: ref[Gtk.App](Gtk.App.new("org.alusus.gtk-widget-guide", 0));
+        app.connectSignal(Gtk.Signal.ACTIVATE, Glib.cb[activate], 0, 0, 0);
+        status = app.exec(0, 0);
+        Glib.unref(app);
     };
 
-    Glib.connectSignal(listBox, Gtk.Signal.ROW_SELECTED, onListBoxSelectionChanged~ptr~cast[ptr[function]], label, 0, 0);
-  };
+    function activate (app: ref[Gtk.App], data: ptr)
+    {
+        // Create the main window.
+        window~ptr = Gtk.AppWindow.new(app)~ptr;
+        window.setTitle("Alusus GTK Widgets Guide");
+        window.setDefaultSize(640, 480);
 
-  function createLogoAndLabel (box: ptr[Gtk.Box]) => ptr[Gtk.Label]
-  {
-    def hBox: ptr[Gtk.Box];
-    def image: ptr[Gtk.Image];
-    def label: ptr[Gtk.Label];
-    hBox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 20);
-    label = Gtk.Label.new("Hello World!");
-    image = Gtk.Image.new("logo.gif");
-    Gtk.Box.packStart(hBox, label, 1, 0, 0);
-    Gtk.Box.packEnd(hBox, image, 1, 0, 0);
-    Gtk.Box.packStart(box, hBox, 1, 0, 0);
-    return label;
-  };
+        // Create the header bar with menu, About, and Quit buttons.
+        window.setTitlebar(createHeaderBar());
 
-  function createEntry (box: ptr[Gtk.Box], label: ptr[Gtk.Label])
-  {
-    def entry: ptr[Gtk.Entry];
-    entry = Gtk.Entry.new();
+        // Create a paned element.
+        def paned: ref[Gtk.Paned](Gtk.Paned.new(Gtk.Orientation.HORIZONTAL));
+        window.add(paned);
+        paned.setPosition(150);
 
-    Gtk.Box.packStart(box, entry, 1, 0, 0);
-    Glib.connectSignal(entry, Gtk.Signal.CHANGED, onEntryChanged~ptr~cast[ptr[function]], label, 0, 0);
-  };
+        // Create a box for the second side of the pane.
+        def box: ref[Gtk.Box](Gtk.Box.new(Gtk.Orientation.VERTICAL, 10));
+        paned.pack2(box, 1, 1);
 
-  function createTextView (box: ptr[Gtk.Box]) => ptr[Gtk.TextBuffer]
-  {
-    def textView: ptr[Gtk.TextView];
-    def textBuffer: ptr[Gtk.TextBuffer];
-    textBuffer = Gtk.TextBuffer.new(0);
-    textView = Gtk.TextView.new(textBuffer);
-    Gtk.TextView.setWrapMode(textView, Gtk.WrapMode.WORD);
-    Gtk.Box.packStart(box, textView, 1, 1, 0);
-    return textBuffer;
-  };
+        // Fill the second side of the paned.
+        def label: ref[Gtk.Label](createLogoAndLabel(box));
+        createEntry(box, label);
+        def textBuffer: ref[Gtk.TextBuffer](createTextView(box));
+        createTextViewButtons(box, textBuffer);
+        createToggleButton(box, label);
+        createCheckButton(box, label);
 
-  function createTextViewButtons (box: ptr[Gtk.Box], buffer: ptr[Gtk.TextBuffer])
-  {
-    def buttonBox: ptr[Gtk.ButtonBox];
-    def sayButton: ptr[Gtk.Button];
-    def clearButton: ptr[Gtk.Button];
-    buttonBox = Gtk.ButtonBox.new(Gtk.Orientation.HORIZONTAL);
-    Gtk.ButtonBox.setLayout(buttonBox, Gtk.ButtonBoxStyle.SPREAD);
-    sayButton = Gtk.Button.newWithLabel("Say");
-    Glib.connectSignal(sayButton, Gtk.Signal.CLICKED, onSayClicked~ptr~cast[ptr[function]], buffer, 0, 0);
-    Gtk.Container.add(buttonBox, sayButton);
-    clearButton = Gtk.Button.newWithLabel("Clear");
-    Glib.connectSignal(clearButton, Gtk.Signal.CLICKED, onClearClicked~ptr~cast[ptr[function]], buffer, 0, 0);
-    Gtk.Container.add(buttonBox, clearButton);
-    Gtk.Box.packStart(box, buttonBox, 1, 0, 0);
-  };
+        // Fill the first side of the paned.
+        createListBox(paned, label);
 
-  function createToggleButton (box: ptr[Gtk.Box], label: ptr[Gtk.Label])
-  {
-    def button: ptr[Gtk.ToggleButton];
-    button = Gtk.ToggleButton.new("Toggle");
-    Gtk.Box.packStart(box, button, 1, 0, 0);
-    Glib.connectSignal(button, Gtk.Signal.TOGGLED, onToggleChanged~ptr~cast[ptr[function]], label, 0, 0);
-  };
+        // Show the window.
+        window.showAll();
+    };
 
-  function createCheckButton (box: ptr[Gtk.Box], label: ptr[Gtk.Label])
-  {
-    def button: ptr[Gtk.CheckButton];
-    button = Gtk.CheckButton.new("Check");
-    Gtk.Box.packStart(box, button, 1, 0, 0);
-    Glib.connectSignal(button, Gtk.Signal.TOGGLED, onToggleChanged~ptr~cast[ptr[function]], label, 0, 0);
-  };
+    function createHeaderBar () => ref[Gtk.HeaderBar]
+    {
+        def headerBar: ref[Gtk.HeaderBar](Gtk.HeaderBar.new());
+        headerBar.setTitle("Alusus GTK Widgets Guide");
 
-  function onListBoxSelectionChanged (listBox: ptr[Gtk.ListBox], item: ptr[Gtk.Bin], label: ptr[Gtk.Label])
-  {
-    def str: array[Char, 100];
-    Srl.String.assign(str~ptr, "Selected item: %s", Gtk.Label.getText(Gtk.Bin.getChild(item)~cast[ptr[Gtk.Label]]));
-    Gtk.Label.setText(label, str~ptr);
-  };
+        def aboutButton: ref[Gtk.Button](Gtk.Button.newWithLabel("About"));
+        aboutButton.connectSignal(Gtk.Signal.CLICKED, Glib.cb[onAboutClicked], 0, 0, 0);
+        headerBar.packStart(aboutButton);
 
-  function onEntryChanged (editable: ptr[Gtk.Editable], label: ptr[Gtk.Label])
-  {
-    def str: array[Char, 100];
-    Srl.String.assign(str~ptr, "Entered text: %s", Gtk.Editable.getChars(editable, 0, -1));
-    Gtk.Label.setText(label, str~ptr);
-  };
+        def quitButton: ref[Gtk.Button](Gtk.Button.newWithLabel("Quit"));
+        quitButton.connectSignal(Gtk.Signal.CLICKED, Glib.cb[onQuitClicked], 0, 0, 0);
+        headerBar.packEnd(quitButton);
 
-  function onAboutClicked (widget: ptr[Gtk.Widget], data: ptr)
-  {
-    def dialog: ptr[Gtk.MessageDialog];
-    dialog = Gtk.MessageDialog.new(
-      window~cast[ptr[Gtk.Window]], 0, Gtk.MessageType.INFO, Gtk.ButtonsType.CLOSE, "Alusus GTK Widget Guide.\nauthor: Sarmad Abdullah"
-    );
-    Gtk.Dialog.exec(dialog);
-    Gtk.Widget.destroy(dialog);
-  };
+        createMenu(headerBar);
 
-  function onSayClicked (widget: ptr[Gtk.Widget], textBuffer: ptr[Gtk.TextBuffer])
-  {
-    // Get the text from the buffer.
-    def text: ptr[array[Char]];
-    def startIter: Gtk.TextIter;
-    def endIter: Gtk.TextIter;
-    Gtk.TextBuffer.getStartIter(textBuffer, startIter~ptr);
-    Gtk.TextBuffer.getEndIter(textBuffer, endIter~ptr);
-    text = Gtk.TextBuffer.getText(textBuffer, startIter~ptr, endIter~ptr, 1);
+        return headerBar;
+    };
 
-    def dialog: ptr[Gtk.MessageDialog];
-    dialog = Gtk.MessageDialog.new(
-      window~cast[ptr[Gtk.Window]], 0, Gtk.MessageType.INFO, Gtk.ButtonsType.CLOSE, text
-    );
-    Gtk.Dialog.exec(dialog);
-    Gtk.Widget.destroy(dialog);
-  };
+    function createMenu (headerBar: ref[Gtk.HeaderBar])
+    {
+        def menu: ref[Gtk.Menu](Gtk.Menu.new());
 
-  function onClearClicked (widget: ptr[Gtk.Widget], textBuffer: ptr[Gtk.TextBuffer])
-  {
-    Gtk.TextBuffer.setText(textBuffer, "", 0);
-  };
+        def item: ref[Gtk.MenuItem](Gtk.MenuItem.new("About"));
+        item.connectSignal(Gtk.Signal.ACTIVATE, Glib.cb[onAboutClicked], 0, 0, 0);
+        menu.append(item);
+        item.show();
+        item~ptr = Gtk.MenuItem.new("Quit")~ptr;
+        item.connectSignal(Gtk.Signal.ACTIVATE, Glib.cb[onQuitClicked], 0, 0, 0);
+        menu.append(item);
+        item.show();
 
-  function onToggleChanged (toggle: ptr[Gtk.ToggleButton], label: ptr[Gtk.Label])
-  {
-    def active: Bool;
-    active = Gtk.ToggleButton.getActive(toggle);
-    if active Gtk.Label.setText(label, "Toggle is now ON")
-    else Gtk.Label.setText(label, "Toggle is now OFF");
-  };
+        def button: ref[Gtk.MenuButton](Gtk.MenuButton.new());
+        button.setPopup(menu);
+        headerBar.packEnd(button);
+    };
 
-  function onQuitClicked (widget: ptr[Gtk.Widget], data: ptr)
-  {
-    Gtk.Widget.destroy(window);
-  };
+    function createListBox (paned: ref[Gtk.Paned], label: ref[Gtk.Label])
+    {
+        def listBox: ref[Gtk.ListBox](Gtk.ListBox.new());
+        paned.pack1(listBox, 0, 1);
+
+        def str: array[Char, 100];
+        def i: Int;
+        for i = 1, i <= 10, ++i {
+            Srl.String.assign(str~ptr, "Row %d", i);
+            def label: ref[Gtk.Label](Gtk.Label.new(str~ptr));
+            listBox.insert(label, -1);
+        };
+
+        listBox.connectSignal(Gtk.Signal.ROW_SELECTED, Glib.cb[onListBoxSelectionChanged], label~ptr, 0, 0);
+    };
+
+    function createLogoAndLabel (box: ref[Gtk.Box]) => ref[Gtk.Label]
+    {
+        def hBox: ref[Gtk.Box](Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 20));
+        def label: ref[Gtk.Label](Gtk.Label.new("Hello World!"));
+        def image: ref[Gtk.Image](Gtk.Image.new("logo.gif"));
+        hBox.packStart(label, 1, 0, 0);
+        hBox.packEnd(image, 1, 0, 0);
+        box.packStart(hBox, 1, 0, 0);
+        return label;
+    };
+
+    function createEntry (box: ref[Gtk.Box], label: ref[Gtk.Label])
+    {
+        def entry: ref[Gtk.Entry](Gtk.Entry.new());
+
+        box.packStart(entry, 1, 0, 0);
+        entry.connectSignal(Gtk.Signal.CHANGED, Glib.cb[onEntryChanged], label~ptr, 0, 0);
+    };
+
+    function createTextView (box: ref[Gtk.Box]) => ref[Gtk.TextBuffer]
+    {
+        def textBuffer: ref[Gtk.TextBuffer](Gtk.TextBuffer.new(0));
+        def textView: ref[Gtk.TextView](Gtk.TextView.new(textBuffer));
+        textView.setWrapMode(Gtk.WrapMode.WORD);
+        box.packStart(textView, 1, 1, 0);
+        return textBuffer;
+    };
+
+    function createTextViewButtons (box: ref[Gtk.Box], buffer: ref[Gtk.TextBuffer])
+    {
+        def buttonBox: ref[Gtk.ButtonBox](Gtk.ButtonBox.new(Gtk.Orientation.HORIZONTAL));
+        buttonBox.setLayout(Gtk.ButtonBoxStyle.SPREAD);
+        def sayButton: ref[Gtk.Button](Gtk.Button.newWithLabel("Say"));
+        sayButton.connectSignal(Gtk.Signal.CLICKED, Glib.cb[onSayClicked], buffer~ptr, 0, 0);
+        buttonBox.add(sayButton);
+        def clearButton: ref[Gtk.Button](Gtk.Button.newWithLabel("Clear"));
+        clearButton.connectSignal(Gtk.Signal.CLICKED, Glib.cb[onClearClicked], buffer~ptr, 0, 0);
+        buttonBox.add(clearButton);
+        box.packStart(buttonBox, 1, 0, 0);
+    };
+
+    function createToggleButton (box: ref[Gtk.Box], label: ref[Gtk.Label])
+    {
+        def button: ref[Gtk.ToggleButton](Gtk.ToggleButton.new("Toggle"));
+        box.packStart(button, 1, 0, 0);
+        button.connectSignal(Gtk.Signal.TOGGLED, Glib.cb[onToggleChanged], label~ptr, 0, 0);
+    };
+
+    function createCheckButton (box: ref[Gtk.Box], label: ref[Gtk.Label])
+    {
+        def button: ref[Gtk.CheckButton](Gtk.CheckButton.new("Check"));
+        box.packStart(button, 1, 0, 0);
+        button.connectSignal(Gtk.Signal.TOGGLED, Glib.cb[onToggleChanged], label~ptr, 0, 0);
+    };
+
+    function onListBoxSelectionChanged (listBox: ref[Gtk.ListBox], item: ref[Gtk.Bin], label: ref[Gtk.Label])
+    {
+        def str: array[Char, 100];
+        Srl.String.assign(
+            str~ptr, "Selected item: %s",
+            Gtk.Label.getText(Gtk.Bin.getChild(item)~ptr~cast[ptr[Gtk.Label]]~cnt)
+        );
+        label.setText(str~ptr);
+    };
+
+    function onEntryChanged (editable: ref[Gtk.Editable], label: ref[Gtk.Label])
+    {
+        def str: array[Char, 100];
+        Srl.String.assign(str~ptr, "Entered text: %s", editable.getChars(0, -1));
+        label.setText(str~ptr);
+    };
+
+    function onAboutClicked (widget: ref[Gtk.Widget], data: ptr)
+    {
+        def dialog: ref[Gtk.MessageDialog](Gtk.MessageDialog.new(
+            window, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.CLOSE, "Alusus GTK Widget Guide.\nauthor: Sarmad Abdullah"
+        ));
+        dialog.exec();
+        Gtk.Widget.destroy(dialog);
+    };
+
+    function onSayClicked (widget: ref[Gtk.Widget], textBuffer: ref[Gtk.TextBuffer])
+    {
+        // Get the text from the buffer.
+        def text: ptr[array[Char]];
+        def startIter: Gtk.TextIter;
+        def endIter: Gtk.TextIter;
+        textBuffer.getStartIter(startIter);
+        textBuffer.getEndIter(endIter);
+        text = textBuffer.getText(startIter, endIter, 1);
+
+        def dialog: ref[Gtk.MessageDialog](Gtk.MessageDialog.new(
+            window, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.CLOSE, text
+        ));
+        dialog.exec();
+        Gtk.Widget.destroy(dialog);
+    };
+
+    function onClearClicked (widget: ref[Gtk.Widget], textBuffer: ref[Gtk.TextBuffer])
+    {
+        textBuffer.setText("", 0);
+    };
+
+    function onToggleChanged (toggle: ref[Gtk.ToggleButton], label: ref[Gtk.Label])
+    {
+        def active: Bool;
+        active = toggle.getActive();
+        if active label.setText("Toggle is now ON")
+        else label.setText("Toggle is now OFF");
+    };
+
+    function onQuitClicked (widget: ref[Gtk.Widget], data: ptr)
+    {
+       Gtk.Widget.destroy(window);
+    };
 };
 
 if Process.argCount < 3 {
-  WidgetGuide.start();
+    WidgetGuide.start();
 } else {
-  def exe: ptr[Build.Exe] = Build.Exe.new(WidgetGuide.start~ast, Process.args~cnt(Process.argCount - 1));
-  Build.Exe.addDependency(exe, Gtk~ast);
-  if Build.Exe.generate(exe) {
-    Srl.Console.print("Build complete.\n");
-  } else {
-    Srl.Console.print("Build failed.\n");
-  };
+    def exe: Build.Exe(WidgetGuide.start~ast, Process.args~cnt(Process.argCount - 1));
+    exe.addDependency(Gtk~ast);
+    if exe.generate() {
+        Srl.Console.print("Build complete.\n");
+    } else {
+        Srl.Console.print("Build failed.\n");
+    };
 };
-
