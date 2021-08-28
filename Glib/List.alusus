@@ -1,94 +1,92 @@
 import "./common.alusus";
 
-@merge def Glib: module
+@merge module Glib
 {
-  def List: type
+  class List
   {
     def data: ptr;
     def next: ptr[List];
     def prev: ptr[List];
 
     @expname[g_list_append]
-    func append (data: ptr) => ref[List];
+    handler this.append (data: ptr) => ref[List];
 
     @expname[g_list_prepend]
-    func prepend (data: ptr) => ref[List];
+    handler this.prepend (data: ptr) => ref[List];
 
     @expname[g_list_insert]
-    func insert (data: ptr, position: Int) => ref[List];
+    handler this.insert (data: ptr, position: Int) => ref[List];
 
     @expname[g_list_insert_before]
-    func insertBefore (sibling: ref[List], data: ptr) => ref[List];
+    handler this.insertBefore (sibling: ref[List], data: ptr) => ref[List];
 
     @expname[g_list_insert_sorted_with_data]
-    func insertSorted (data: ptr, fn: CompareDataFunc, userData: ptr) => ref[List];
+    handler this.insertSorted (data: ptr, fn: CompareDataFunc, userData: ptr) => ref[List];
 
     @expname[g_list_remove]
-    func remove (data: ptr) => ref[List];
+    handler this.remove (data: ptr) => ref[List];
 
     @expname[g_list_remove_link]
-    func removeLink (link: ref[List]) => ref[List];
+    handler this.removeLink (link: ref[List]) => ref[List];
 
     @expname[g_list_delete_link]
-    func deleteLink (link: ref[List]) => ref[List];
+    handler this.deleteLink (link: ref[List]) => ref[List];
 
     @expname[g_list_remove_all]
-    func removeAll (data: ptr) => ref[List];
+    handler this.removeAll (data: ptr) => ref[List];
 
     @expname[g_list_free]
-    func free ();
+    handler this.free ();
 
     @expname[g_list_free_full]
-    func freeFull (fn: DestroyNotify);
+    handler this.freeFull (fn: DestroyNotify);
 
-    @shared
     @expname[g_list_alloc]
     func alloc () => ref[List];
 
     @expname[g_list_free_1]
-    func freeOne ();
+    handler this.freeOne ();
 
     @expname[g_list_length]
-    func getLength () => Int;
+    handler this.getLength () => Int;
 
     @expname[g_list_copy]
-    func copy () => ref[List];
+    handler this.copy () => ref[List];
 
     @expname[g_list_copy_deep]
-    func copyDeep (fn: CopyFunc, userData: ptr) => ref[List];
+    handler this.copyDeep (fn: CopyFunc, userData: ptr) => ref[List];
 
     @expname[g_list_reverse]
-    func reverse () => ref[List];
+    handler this.reverse () => ref[List];
 
     @expname[g_list_sort_with_data]
-    func sort (fn: CompareDataFunc, userData: ptr) => ref[List];
+    handler this.sort (fn: CompareDataFunc, userData: ptr) => ref[List];
 
-    @shared
     @expname[g_list_concat]
     func concat (list1: ref[List], list2: ref[List]) => ref[List];
 
     @expname[g_list_foreach]
-    func foreach (fn: Func, userData: ptr);
+    handler this.foreach (fn: Func, userData: ptr);
 
     @expname[g_list_first]
-    func getFirst () => ref[List];
+    handler this.getFirst () => ref[List];
 
     @expname[g_list_last]
-    func getLast () => ref[List];
+    handler this.getLast () => ref[List];
 
     @expname[g_list_nth]
-    func getNth (n: Word) => ref[List];
+    handler this.getNth (n: Word) => ref[List];
 
     @expname[g_list_find]
-    func find (data: ptr) => ref[List];
+    handler this.find (data: ptr) => ref[List];
 
     @expname[g_list_find_custom]
-    func findCustom (data: ptr, fn: CompareFunc) => ref[List];
+    handler this.findCustom (data: ptr, fn: CompareFunc) => ref[List];
 
     @expname[g_list_position]
-    func getPosition (link: ref[List]) => Int;
+    handler this.getPosition (link: ref[List]) => Int;
 
     @expname[g_list_index]
-    func getIndex (data: ptr) => Int;
+    handler this.getIndex (data: ptr) => Int;
   };
 };

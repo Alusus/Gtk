@@ -1,8 +1,8 @@
-@merge def Glib: module
+@merge module Glib
 {
-  type Object {
+  class Object {
     @expname[g_signal_connect_data]
-    func connectSignal(
+    handler this.connectSignal(
       detailedSignal: ptr[array[Char]], handler: ptr[func], data: ptr,
       destroyData: ptr[func], flags: Int
     ): Word[64];
@@ -18,11 +18,10 @@
   def CopyFunc: alias ptr[func (src: ptr, data: ptr) => ptr];
   def DestroyNotify: alias ptr[func (data: ptr)];
 
-  def Type: type
+  class Type
   {
     def t: Word[64];
 
-    @shared
     @expname[g_type_init]
     func init;
 
@@ -50,76 +49,76 @@
     def VARIANT: 84;
   };
 
-  type Value
+  class Value
   {
     def t: Type;
     def v: array[Int[64], 2];
 
     @expname[g_value_init]
-    func init(t: Type): ptr[Value];
+    handler this.init(t: Type): ptr[Value];
 
     @expname[g_value_set_boolean]
-    func setBool(v: Bool);
+    handler this.setBool(v: Bool);
 
     @expname[g_value_get_boolean]
-    func getBool(): Bool;
+    handler this.getBool(): Bool;
 
     @expname[g_value_set_char]
-    func setChar(c: Char);
+    handler this.setChar(c: Char);
 
     @expname[g_value_get_char]
-    func getChar(): Char;
+    handler this.getChar(): Char;
 
     @expname[g_value_set_int]
-    func setInt(i: Int);
+    handler this.setInt(i: Int);
 
     @expname[g_value_get_int]
-    func getInt(): Int;
+    handler this.getInt(): Int;
 
     @expname[g_value_set_uint]
-    func setUint(i: Word);
+    handler this.setUint(i: Word);
 
     @expname[g_value_get_uint]
-    func getUint(): Word;
+    handler this.getUint(): Word;
 
     @expname[g_value_set_int64]
-    func setInt64(i: Int[64]);
+    handler this.setInt64(i: Int[64]);
 
     @expname[g_value_get_int64]
-    func getInt64(): Int[64];
+    handler this.getInt64(): Int[64];
 
     @expname[g_value_set_uint64]
-    func setUint64(i: Word[64]);
+    handler this.setUint64(i: Word[64]);
 
     @expname[g_value_get_uint64]
-    func getUint64(): Word[64];
+    handler this.getUint64(): Word[64];
 
     @expname[g_value_set_float]
-    func setFloat(f: Float);
+    handler this.setFloat(f: Float);
 
     @expname[g_value_get_float]
-    func getFloat(): Float;
+    handler this.getFloat(): Float;
 
     @expname[g_value_set_double]
-    func setDouble(d: Float[64]);
+    handler this.setDouble(d: Float[64]);
 
     @expname[g_value_get_double]
-    func getDouble(): Float[64];
+    handler this.getDouble(): Float[64];
 
     @expname[g_value_set_string]
-    func setString(s: ptr[array[Char]]);
+    handler this.setString(s: ptr[array[Char]]);
 
     @expname[g_value_set_static_string]
-    func setStaticString(s: ptr[array[Char]]);
+    handler this.setStaticString(s: ptr[array[Char]]);
 
     @expname[g_value_get_string]
-    func getString(): ptr[array[Char]];
+    handler this.getString(): ptr[array[Char]];
 
     @expname[g_value_set_pointer]
-    func setPointer(p: ptr);
+    handler this.setPointer(p: ptr);
 
     @expname[g_value_get_pointer]
-    func getPointer(): ptr;
+    handler this.getPointer(): ptr;
   };
 
   module Timeout {

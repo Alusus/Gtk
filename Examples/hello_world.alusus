@@ -4,58 +4,49 @@ import "Build.alusus";
 
 def HelloWorld: module
 {
-    def window: ref[Gtk.AppWindow];
+    use Gtk;
+    def window: ref[AppWindow];
 
     @expname[main]
     func start {
-        def status: Int;
-
-        def app: ref[Gtk.App](Gtk.App.new("org.alusus.gtk-hello-world", 0));
-        app.connectSignal(Gtk.Signal.ACTIVATE, Glib.cb[activate], 0, 0, 0);
-        status = app.exec(0, 0);
+        def app: ref[App](App.new("org.alusus.gtk-hello-world", 0).{
+            connectSignal(Signal.ACTIVATE, Glib.cb[activate], 0, 0, 0);
+        });
+        def status: Int = app.exec(0, 0);
         Glib.unref(app);
     };
 
-    func activate (app: ref[Gtk.App], data: ptr): Void {
-
-        window~ptr = Gtk.AppWindow.new(app)~ptr;
-        window.setTitle("Alusus GTK Hello World");
-        window.setDefaultSize(480, 320);
-
-        def box: ref[Gtk.Box](Gtk.Box.new(Gtk.Orientation.VERTICAL, 20));
-
-        def label: ref[Gtk.Label](Gtk.Label.new("Hello World!"));
-
-        def buttonBox: ref[Gtk.ButtonBox](Gtk.ButtonBox.new(Gtk.Orientation.HORIZONTAL));
-        buttonBox.setLayout(Gtk.ButtonBoxStyle.SPREAD);
-
-        def aboutButton: ref[Gtk.Button](Gtk.Button.newWithLabel("About"));
-        aboutButton.connectSignal(Gtk.Signal.CLICKED, Glib.cb[onAboutClicked], 0, 0, 0);
-        buttonBox.add(aboutButton);
-
-        def quitButton: ref[Gtk.Button](Gtk.Button.newWithLabel("Quit"));
-        quitButton.connectSignal(Gtk.Signal.CLICKED, Glib.cb[onQuitClicked], 0, 0, 0);
-        buttonBox.add(quitButton);
-
-        box.packStart(label, 1, 0, 0);
-        box.packStart(buttonBox, 1, 0, 0);
-
-        window.add(box);
-
-        window.showAll();
+    func activate (app: ref[App], data: ptr): Void {
+        window~no_deref = AppWindow.new(app).{
+            setTitle("Alusus GTK Hello World");
+            setDefaultSize(480, 320);
+            add(Box.new(Orientation.VERTICAL, 20).{
+                packStart(Label.new("Hello World!"), 1, 0, 0);
+                packStart(ButtonBox.new(Orientation.HORIZONTAL).{
+                    setLayout(ButtonBoxStyle.SPREAD);
+                    add(Button.newWithLabel("About").{
+                        connectSignal(Signal.CLICKED, Glib.cb[onAboutClicked], 0, 0, 0);
+                    });
+                    add(Button.newWithLabel("Quit").{
+                        connectSignal(Signal.CLICKED, Glib.cb[onQuitClicked], 0, 0, 0);
+                    });
+                }, 1, 0, 0);
+            });
+            showAll();
+        }
     };
 
-    func onAboutClicked (widget: ref[Gtk.Widget], data: ptr): Void {
-        def dialog: ref[Gtk.MessageDialog](Gtk.MessageDialog.new(
-            window, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.CLOSE,
+    func onAboutClicked (widget: ref[Widget], data: ptr): Void {
+        def dialog: ref[MessageDialog](MessageDialog.new(
+            window, 0, MessageType.INFO, ButtonsType.CLOSE,
             "Alusus GTK Hello World.\nauthor: Sarmad Abdullah"
         ));
         dialog.exec();
-        Gtk.Widget.destroy(dialog);
+        Widget.destroy(dialog);
     };
 
-    func onQuitClicked (widget: ref[Gtk.Widget], data: ptr): Void {
-        Gtk.Widget.destroy(window);
+    func onQuitClicked (widget: ref[Widget], data: ptr): Void {
+        Widget.destroy(window);
     };
 };
 

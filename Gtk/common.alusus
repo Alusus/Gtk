@@ -2,100 +2,97 @@
 {
   def Callback: alias ptr[function (widget: ref[Widget], data: ptr)];
 
-  def App: type
+  class App
   {
     @injection def glibObj: Glib.Object;
 
-    @shared
     @expname[gtk_application_new]
     func new (appId: ptr[array[Char]], flags: Int) => ref[App];
 
     @expname[g_application_run]
-    func exec (argc: Int, argv: ptr[array[ptr[array[Char]]]]) => Int;
+    handler this.exec (argc: Int, argv: ptr[array[ptr[array[Char]]]]): Int;
   };
 
-  def Widget: type
+  class Widget
   {
     @injection def glibObj: Glib.Object;
 
-    @shared
     @expname[gtk_widget_destroy]
     func destroy (widget: ref[Widget]);
 
     @expname[gtk_widget_show]
-    func show ();
+    handler this.show ();
 
     @expname[gtk_widget_show_now]
-    func showNow ();
+    handler this.showNow ();
 
     @expname[gtk_widget_hide]
-    func hide ();
+    handler this.hide ();
 
     @expname[gtk_widget_show_all]
-    func showAll ();
+    handler this.showAll ();
 
     @expname[gtk_widget_set_visible]
-    func setVisible (visible: Bool);
+    handler this.setVisible (visible: Bool);
   };
 
-  def Container: type
+  class Container
   {
     @injection def widget: Widget;
 
     @expname[gtk_container_add]
-    func add (widget: ref[Widget]);
+    handler this.add (widget: ref[Widget]);
 
     @expname[gtk_container_remove]
-    func remove (widget: ref[Widget]);
+    handler this.remove (widget: ref[Widget]);
 
     @expname[gtk_container_add_with_properties]
-    func addWithProperties (widget: ref[Widget], firstPropName: ptr[array[Char]], ...any);
+    handler this.addWithProperties (widget: ref[Widget], firstPropName: ptr[array[Char]], ...any);
 
     @expname[gtk_container_foreach]
-    func foreach (callback: Callback, data: ptr);
+    handler this.foreach (callback: Callback, data: ptr);
 
     @expname[gtk_container_get_children]
-    func getChildren () => ref[Glib.List];
+    handler this.getChildren () => ref[Glib.List];
 
     @expname[gtk_container_get_focus_child]
-    func getFocusChild () => ref[Widget];
+    handler this.getFocusChild () => ref[Widget];
 
     @expname[gtk_container_set_focus_child]
-    func setFocusChild (child: ref[Widget]);
+    handler this.setFocusChild (child: ref[Widget]);
 
     @expname[gtk_container_child_get]
-    func getChildProps (child: ref[Widget], firstPropName: ptr[array[Char]], ...any);
+    handler this.getChildProps (child: ref[Widget], firstPropName: ptr[array[Char]], ...any);
 
     @expname[gtk_container_child_set]
-    func setChildProps (child: ref[Widget], firstPropName: ptr[array[Char]], ...any);
+    handler this.setChildProps (child: ref[Widget], firstPropName: ptr[array[Char]], ...any);
 
     @expname[gtk_container_get_border_width]
-    func getBorderWidth () => Word;
+    handler this.getBorderWidth () => Word;
 
     @expname[gtk_container_set_border_width]
-    func setBorderWidth (width: Word);
+    handler this.setBorderWidth (width: Word);
   };
 
-  def TextBuffer: type
+  class TextBuffer
   {
-    @shared
     @expname[gtk_text_buffer_new]
     func new (table: ptr) => ref[TextBuffer];
 
     @expname[gtk_text_buffer_set_text]
-    func setText (text: ptr[array[Char]], len: Int);
+    handler this.setText (text: ptr[array[Char]], len: Int);
 
     @expname[gtk_text_buffer_get_text]
-    func getText (start: ref[TextIter], end: ref[TextIter], includeHidden: Bool): ptr[array[Char]];
+    handler this.getText (start: ref[TextIter], end: ref[TextIter], includeHidden: Bool): ptr[array[Char]];
 
     @expname[gtk_text_buffer_get_start_iter]
-    func getStartIter (ref[TextIter]);
+    handler this.getStartIter (ref[TextIter]);
 
     @expname[gtk_text_buffer_get_end_iter]
-    func getEndIter (ref[TextIter]);
+    handler this.getEndIter (ref[TextIter]);
   };
 
-  def TextIter: type
+  class TextIter
   {
     def dummy1: ptr;
     def dummy2: ptr;
@@ -114,27 +111,25 @@
     def dummy14: ptr;
   };
 
-  def Editable: type
+  class Editable
   {
     @expname[gtk_editable_get_chars]
-    func getChars (start: Int, end: Int) => ptr[array[Char]];
+    handler this.getChars (start: Int, end: Int) => ptr[array[Char]];
   };
 
-  def Builder: type
+  class Builder
   {
-    @shared
     @expname[gtk_builder_new]
     func new(): ref[Builder];
 
-    @shared
     @expname[gtk_builder_new]
     func newFromFile(filename: ptr[array[Char]]): ref[Builder];
 
-    @shared
     @expname[gtk_builder_new_from_resource]
     func newFromResource(resource_path: ptr[array[Char]]): ref[Builder];
 
     @expname[gtk_builder_connect_signals]
-    func connectSignals(userData: ptr): Void;
+    handler this.connectSignals(userData: ptr): Void;
   };
 };
+

@@ -1,68 +1,67 @@
-@merge def Gtk: module
+@merge module Gtk
 {
-  def Window: type
+  class Window
   {
     @injection def container: Container;
 
     @expname[gtk_window_set_title]
-    func setTitle (title: ptr[array[Char]]);
+    handler this.setTitle (title: ptr[array[Char]]);
 
     @expname[gtk_window_set_titlebar]
-    func setTitlebar (titlebar: ref[Widget]);
+    handler this.setTitlebar (titlebar: ref[Widget]);
 
     @expname[gtk_window_set_resizable]
-    func setResizable (resiable: Bool);
+    handler this.setResizable (resiable: Bool);
 
     @expname[gtk_window_set_modal]
-    func setModal (modal: Bool);
+    handler this.setModal (modal: Bool);
 
     @expname[gtk_window_set_default_size]
-    func setDefaultSize (width: Int, height: Int);
+    handler this.setDefaultSize (width: Int, height: Int);
 
     @expname[gtk_window_set_transient_for]
-    func setTransientFor (parent: ref[Window]);
+    handler this.setTransientFor (parent: ref[Window]);
 
     @expname[gtk_window_set_destroy_with_parent]
-    func setDestroyWithParent (setting: Bool);
+    handler this.setDestroyWithParent (setting: Bool);
 
     @expname[gtk_window_is_active]
-    func isActive () => Bool;
+    handler this.isActive () => Bool;
 
     @expname[gtk_window_get_focus]
-    func getFocus () => ref[Widget];
+    handler this.getFocus () => ref[Widget];
 
     @expname[gtk_window_set_focus]
-    func setFocus (widget: ref[Widget]);
+    handler this.setFocus (widget: ref[Widget]);
 
     @expname[gtk_window_close]
-    func close ();
+    handler this.close ();
   };
 
-  def AppWindow: type
+  class AppWindow
   {
     @injection def window: Window;
 
-    @shared
     @expname[gtk_application_window_new]
-    func new (app: ref[App]) => ref[AppWindow];
+    func new (app: ref[App]): ref[AppWindow];
   };
 
-  def Dialog: type
+  class Dialog
   {
     @injection def window: Window;
 
     @expname[gtk_dialog_run]
-    func exec () => Int;
+    handler this.exec (): Int;
   };
 
-  def MessageDialog: type
+  class MessageDialog
   {
     @injection def dialog: Dialog;
 
-    @shared
     @expname[gtk_message_dialog_new]
     func new (
       parent: ref[Window], flags: Int, dlgType: Int, buttons: Int, msg: ptr[array[Char]], args: ...any
     ) => ref[MessageDialog];
   };
 };
+
