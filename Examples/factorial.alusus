@@ -1,0 +1,126 @@
+import "Apm";
+Apm.importFile("Alusus/Gtk");
+import "Build";
+import "Srl/Console";
+import "Srl/String";
+
+@expname[exit] func exit(Int);
+
+module Factorial {
+    func factorial (i: Int): Int[64] {
+        if i <= 0 return 1 else return i * factorial(i - 1);
+    }
+
+    func test_factorial (): Bool {
+        if factorial(5) != 120 return 0;
+        if factorial(0) != 1 return 0;
+        return 1;
+    }
+}
+
+module Gui {
+    def window: ref[Gtk.AppWindow];
+
+    @expname[main]
+    func start {
+        def app: ref[Gtk.App];
+        def status: Int;
+        def appId: "org.alusus.gtk-factorial";
+        app~ptr = Gtk.App.new(appId، 0)~ptr;
+        app.connectSignal(Gtk.Signal.ACTIVATE، Glib.cb[activate]، 0، 0، 0);
+        status = app.exec(0، 0);
+        Glib.unref(app);
+    }
+
+    func activate (app: ref[Gtk.App]، data: ptr) {
+        def box: ref[Gtk.Box];
+        def label: ref[Gtk.Label];
+        def entry: ref[Gtk.Entry];
+        def buttonBox: ref[Gtk.ButtonBox];
+        def aboutButton: ref[Gtk.Button];
+        def exitButton: ref[Gtk.Button];
+
+        window~ptr = Gtk.AppWindow.new(app)~ptr;
+        window.setTitle("Alusus/Gtk example: Factorial");
+        window.setDefaultSize(480، 320);
+
+        box~ptr = Gtk.Box.new(Gtk.Orientation.VERTICAL، 20)~ptr;
+
+        label~ptr = Gtk.Label.new("Enter a number")~ptr;
+
+        entry~ptr = Gtk.Entry.new()~ptr;
+        entry.connectSignal(Gtk.Signal.CHANGED، Glib.cb[onEntryChanged]، label~ptr، 0، 0);
+
+        buttonBox~ptr = Gtk.ButtonBox.new(Gtk.Orientation.HORIZONTAL)~ptr;
+        buttonBox.setLayout(Gtk.ButtonBoxStyle.SPREAD);
+
+        aboutButton~ptr = Gtk.Button.newWithLabel("About")~ptr;
+        aboutButton.connectSignal(Gtk.Signal.CLICKED، Glib.cb[onAboutClicked]، 0، 0، 0);
+        buttonBox.add(aboutButton);
+
+        exitButton~ptr = Gtk.Button.newWithLabel("Exit")~ptr;
+        exitButton.connectSignal(Gtk.Signal.CLICKED، Glib.cb[onExitClicked]، 0، 0، 0);
+        buttonBox.add(exitButton);
+
+        box.packStart(label، 1، 0، 0);
+        box.packStart(entry، 1، 0، 0);
+        box.packStart(buttonBox، 1، 0، 0);
+
+        window.add(box);
+
+        window.showAll();
+    }
+
+    func onEntryChanged (editable: ref[Gtk.Editable]، label: ref[Gtk.Label]) {
+        def input: Int;
+        def entryChars: CharsPtr = Gtk.Editable.getChars(editable، 0، -1);
+        if Srl.String.isEqual(entryChars, "") {
+            label.setText("Enter a number");
+        } else if Srl.String.scan(Gtk.Editable.getChars(editable، 0، -1)، "%d"، input~ptr) != 0 {
+            def chars: array[Char، 100];
+            Srl.String.assign(chars~ptr، "Factorial of %ld = %ld"، input، Factorial.factorial(input));
+            label.setText(chars~ptr);
+        }
+    }
+
+    func onAboutClicked (element: ref[Gtk.Widget]، data: ptr) {
+        def dialog: ref[Gtk.Dialog];
+        dialog~ptr = Gtk.MessageDialog.new(
+            window، 0، Gtk.MessageType.INFO، Gtk.ButtonsType.CLOSE، "Factorial\ndeveloped by: Sarmad Khalid Abdullah"
+        )~ptr;
+        dialog.exec();
+        Gtk.Widget.destroy(dialog);
+    }
+
+    func onExitClicked (element: ref[Gtk.Widget]، data: ptr) {
+        Gtk.Widget.destroy(window);
+    }
+}
+
+
+if Process.argCount < 3 {
+    // Launch GUI
+    Gui.start();
+} else {
+    def input: Int;
+    if Srl.String.scan(Process.args~cnt(Process.argCount - 1)، "%d"، input~ptr) != 0 {
+        // Print results
+        Srl.Console.print("Factorial of %ld = %ld\n"، input، Factorial.factorial(input));
+    } else {
+        // Run unit tests
+        if Factorial.test_factorial() == 0 {
+            Srl.Console.print("Unit test failed.\n");
+            exit(1);
+        }
+        // Build executable
+        def exe: Build.Exe(Gui.start~ast، Process.args~cnt(Process.argCount - 1));
+        exe.addDependency(Gtk~ast);
+        if exe.generate() {
+            Srl.Console.print("Build successful.\n");
+        } else {
+            Srl.Console.print("Build failed.\n");
+            exit(1);
+        }
+    }
+}
+
