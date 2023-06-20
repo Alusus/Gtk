@@ -1,137 +1,134 @@
-@merge module Glib
-{
-  class Object {
-    @expname[g_signal_connect_data]
-    handler this.connectSignal(
-      detailedSignal: ptr[array[Char]], handler: ptr[func], data: ptr,
-      destroyData: ptr[func], flags: Int
-    ): Word[64];
-  }
+@merge module Glib {
+    class Object {
+        @expname[g_signal_connect_data]
+        handler this.connectSignal(
+            detailedSignal: ptr[array[Char]], handler: ptr[func], data: ptr,
+            destroyData: ptr[func], flags: Int
+        ): Word[64];
+    }
 
-  macro cb [f] f~ptr~cast[ptr[function]];
+    macro cb[f] f~ptr~cast[ptr[function]];
 
-  @expname[g_object_unref] func unref(p: ref[Object]);
+    @expname[g_object_unref] func unref(p: ref[Object]);
 
-  def Func: alias ptr[func (data: ptr, userData: ptr)];
-  def CompareFunc: alias ptr[func (ptr, ptr)=>Int];
-  def CompareDataFunc: alias ptr[func (a: ptr, b: ptr, data: ptr) => Int];
-  def CopyFunc: alias ptr[func (src: ptr, data: ptr) => ptr];
-  def DestroyNotify: alias ptr[func (data: ptr)];
+    def Func: alias ptr[func (data: ptr, userData: ptr)];
+    def CompareFunc: alias ptr[func (ptr, ptr) => Int];
+    def CompareDataFunc: alias ptr[func (a: ptr, b: ptr, data: ptr) => Int];
+    def CopyFunc: alias ptr[func (src: ptr, data: ptr) => ptr];
+    def DestroyNotify: alias ptr[func (data: ptr)];
 
-  class Type
-  {
-    def t: Word[64];
+    class Type {
+        def t: Word[64];
 
-    @expname[g_type_init]
-    func init;
+        @expname[g_type_init]
+        func init;
 
-    def INVALID: 0;
-    def NONE: 4;
-    def INTERFACE: 8;
-    def CHAR: 12;
-    def UCHAR: 16;
-    def BOOL: 20;
-    def INT: 24;
-    def UINT: 28;
-    def LONG: 32;
-    def ULONG: 36;
-    def INT64: 40;
-    def UINT64: 44;
-    def ENUM: 48;
-    def FLAGS: 52;
-    def FLOAT: 56;
-    def DOUBLE: 60;
-    def STRING: 64;
-    def POINTER: 68;
-    def BOXED: 72;
-    def PARAM: 76;
-    def OBJECT: 80;
-    def VARIANT: 84;
-  };
+        def INVALID: 0;
+        def NONE: 4;
+        def INTERFACE: 8;
+        def CHAR: 12;
+        def UCHAR: 16;
+        def BOOL: 20;
+        def INT: 24;
+        def UINT: 28;
+        def LONG: 32;
+        def ULONG: 36;
+        def INT64: 40;
+        def UINT64: 44;
+        def ENUM: 48;
+        def FLAGS: 52;
+        def FLOAT: 56;
+        def DOUBLE: 60;
+        def STRING: 64;
+        def POINTER: 68;
+        def BOXED: 72;
+        def PARAM: 76;
+        def OBJECT: 80;
+        def VARIANT: 84;
+    }
 
-  class Value
-  {
-    def t: Type;
-    def v: array[Int[64], 2];
+    class Value {
+        def t: Type;
+        def v: array[Int[64], 2];
 
-    @expname[g_value_init]
-    handler this.init(t: Type): ptr[Value];
+        @expname[g_value_init]
+        handler this.init(t: Type): ptr[Value];
 
-    @expname[g_value_set_boolean]
-    handler this.setBool(v: Bool);
+        @expname[g_value_set_boolean]
+        handler this.setBool(v: Bool);
 
-    @expname[g_value_get_boolean]
-    handler this.getBool(): Bool;
+        @expname[g_value_get_boolean]
+        handler this.getBool(): Bool;
 
-    @expname[g_value_set_char]
-    handler this.setChar(c: Char);
+        @expname[g_value_set_char]
+        handler this.setChar(c: Char);
 
-    @expname[g_value_get_char]
-    handler this.getChar(): Char;
+        @expname[g_value_get_char]
+        handler this.getChar(): Char;
 
-    @expname[g_value_set_int]
-    handler this.setInt(i: Int);
+        @expname[g_value_set_int]
+        handler this.setInt(i: Int);
 
-    @expname[g_value_get_int]
-    handler this.getInt(): Int;
+        @expname[g_value_get_int]
+        handler this.getInt(): Int;
 
-    @expname[g_value_set_uint]
-    handler this.setUint(i: Word);
+        @expname[g_value_set_uint]
+        handler this.setUint(i: Word);
 
-    @expname[g_value_get_uint]
-    handler this.getUint(): Word;
+        @expname[g_value_get_uint]
+        handler this.getUint(): Word;
 
-    @expname[g_value_set_int64]
-    handler this.setInt64(i: Int[64]);
+        @expname[g_value_set_int64]
+        handler this.setInt64(i: Int[64]);
 
-    @expname[g_value_get_int64]
-    handler this.getInt64(): Int[64];
+        @expname[g_value_get_int64]
+        handler this.getInt64(): Int[64];
 
-    @expname[g_value_set_uint64]
-    handler this.setUint64(i: Word[64]);
+        @expname[g_value_set_uint64]
+        handler this.setUint64(i: Word[64]);
 
-    @expname[g_value_get_uint64]
-    handler this.getUint64(): Word[64];
+        @expname[g_value_get_uint64]
+        handler this.getUint64(): Word[64];
 
-    @expname[g_value_set_float]
-    handler this.setFloat(f: Float);
+        @expname[g_value_set_float]
+        handler this.setFloat(f: Float);
 
-    @expname[g_value_get_float]
-    handler this.getFloat(): Float;
+        @expname[g_value_get_float]
+        handler this.getFloat(): Float;
 
-    @expname[g_value_set_double]
-    handler this.setDouble(d: Float[64]);
+        @expname[g_value_set_double]
+        handler this.setDouble(d: Float[64]);
 
-    @expname[g_value_get_double]
-    handler this.getDouble(): Float[64];
+        @expname[g_value_get_double]
+        handler this.getDouble(): Float[64];
 
-    @expname[g_value_set_string]
-    handler this.setString(s: ptr[array[Char]]);
+        @expname[g_value_set_string]
+        handler this.setString(s: ptr[array[Char]]);
 
-    @expname[g_value_set_static_string]
-    handler this.setStaticString(s: ptr[array[Char]]);
+        @expname[g_value_set_static_string]
+        handler this.setStaticString(s: ptr[array[Char]]);
 
-    @expname[g_value_get_string]
-    handler this.getString(): ptr[array[Char]];
+        @expname[g_value_get_string]
+        handler this.getString(): ptr[array[Char]];
 
-    @expname[g_value_set_pointer]
-    handler this.setPointer(p: ptr);
+        @expname[g_value_set_pointer]
+        handler this.setPointer(p: ptr);
 
-    @expname[g_value_get_pointer]
-    handler this.getPointer(): ptr;
-  };
+        @expname[g_value_get_pointer]
+        handler this.getPointer(): ptr;
+    }
 
-  module Timeout {
-    @expname[g_timeout_add]
-    func add(mileseconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
+    module Timeout {
+        @expname[g_timeout_add]
+        func add(mileseconds: int, ptr[func (data: ptr): bool], data: ptr): int;
 
-    @expname[g_timeout_add_full]
-    func addFull(priority: int, mileseconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
+        @expname[g_timeout_add_full]
+        func addFull(priority: int, mileseconds: int, ptr[func (data: ptr): bool], data: ptr): int;
 
-    @expname[g_timeout_add_seconds]
-    func addSeconds(seconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
+        @expname[g_timeout_add_seconds]
+        func addSeconds(seconds: int, ptr[func (data: ptr): bool], data: ptr): int;
 
-    @expname[g_timeout_add_seconds_full]
-    func addSeconds(priority: int, seconds: int, ptr[ func(data: ptr): bool ], data: ptr): int;
-  };
-};
+        @expname[g_timeout_add_seconds_full]
+        func addSeconds(priority: int, seconds: int, ptr[func (data: ptr): bool], data: ptr): int;
+    }
+}

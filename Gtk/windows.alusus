@@ -1,67 +1,61 @@
-@merge module Gtk
-{
-  class Window
-  {
-    @injection def container: Container;
+@merge module Gtk {
+    class Window {
+        @injection def container: Container;
 
-    @expname[gtk_window_set_title]
-    handler this.setTitle (title: ptr[array[Char]]);
+        @expname[gtk_window_set_title]
+        handler this.setTitle(title: ptr[array[Char]]);
 
-    @expname[gtk_window_set_titlebar]
-    handler this.setTitlebar (titlebar: ref[Widget]);
+        @expname[gtk_window_set_titlebar]
+        handler this.setTitlebar(titlebar: ref[Widget]);
 
-    @expname[gtk_window_set_resizable]
-    handler this.setResizable (resiable: Bool);
+        @expname[gtk_window_set_resizable]
+        handler this.setResizable(resiable: Bool);
 
-    @expname[gtk_window_set_modal]
-    handler this.setModal (modal: Bool);
+        @expname[gtk_window_set_modal]
+        handler this.setModal(modal: Bool);
 
-    @expname[gtk_window_set_default_size]
-    handler this.setDefaultSize (width: Int, height: Int);
+        @expname[gtk_window_set_default_size]
+        handler this.setDefaultSize(width: Int, height: Int);
 
-    @expname[gtk_window_set_transient_for]
-    handler this.setTransientFor (parent: ref[Window]);
+        @expname[gtk_window_set_transient_for]
+        handler this.setTransientFor(parent: ref[Window]);
 
-    @expname[gtk_window_set_destroy_with_parent]
-    handler this.setDestroyWithParent (setting: Bool);
+        @expname[gtk_window_set_destroy_with_parent]
+        handler this.setDestroyWithParent(setting: Bool);
 
-    @expname[gtk_window_is_active]
-    handler this.isActive () => Bool;
+        @expname[gtk_window_is_active]
+        handler this.isActive() => Bool;
 
-    @expname[gtk_window_get_focus]
-    handler this.getFocus () => ref[Widget];
+        @expname[gtk_window_get_focus]
+        handler this.getFocus() => ref[Widget];
 
-    @expname[gtk_window_set_focus]
-    handler this.setFocus (widget: ref[Widget]);
+        @expname[gtk_window_set_focus]
+        handler this.setFocus(widget: ref[Widget]);
 
-    @expname[gtk_window_close]
-    handler this.close ();
-  };
+        @expname[gtk_window_close]
+        handler this.close();
+    }
 
-  class AppWindow
-  {
-    @injection def window: Window;
+    class AppWindow {
+        @injection def window: Window;
 
-    @expname[gtk_application_window_new]
-    func new (app: ref[App]): ref[AppWindow];
-  };
+        @expname[gtk_application_window_new]
+        func new(app: ref[App]): ref[AppWindow];
+    }
 
-  class Dialog
-  {
-    @injection def window: Window;
+    class Dialog {
+        @injection def window: Window;
 
-    @expname[gtk_dialog_run]
-    handler this.exec (): Int;
-  };
+        @expname[gtk_dialog_run]
+        handler this.exec(): Int;
+    }
 
-  class MessageDialog
-  {
-    @injection def dialog: Dialog;
+    class MessageDialog {
+        @injection def dialog: Dialog;
 
-    @expname[gtk_message_dialog_new]
-    func new (
-      parent: ref[Window], flags: Int, dlgType: Int, buttons: Int, msg: ptr[array[Char]], args: ...any
-    ) => ref[MessageDialog];
-  };
-};
-
+        @expname[gtk_message_dialog_new]
+        func new(
+            parent: ref[Window], flags: Int, dlgType: Int, buttons: Int, msg: ptr[array[Char]], args: ...any
+        ) => ref[MessageDialog];
+    }
+}

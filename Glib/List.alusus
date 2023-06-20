@@ -1,92 +1,90 @@
 import "./common.alusus";
 
-@merge module Glib
-{
-  class List
-  {
-    def data: ptr;
-    def next: ptr[List];
-    def prev: ptr[List];
+@merge module Glib {
+    class List {
+        def data: ptr;
+        def next: ptr[List];
+        def prev: ptr[List];
 
-    @expname[g_list_append]
-    handler this.append (data: ptr) => ref[List];
+        @expname[g_list_append]
+        handler this.append(data: ptr) => ref[List];
 
-    @expname[g_list_prepend]
-    handler this.prepend (data: ptr) => ref[List];
+        @expname[g_list_prepend]
+        handler this.prepend(data: ptr) => ref[List];
 
-    @expname[g_list_insert]
-    handler this.insert (data: ptr, position: Int) => ref[List];
+        @expname[g_list_insert]
+        handler this.insert(data: ptr, position: Int) => ref[List];
 
-    @expname[g_list_insert_before]
-    handler this.insertBefore (sibling: ref[List], data: ptr) => ref[List];
+        @expname[g_list_insert_before]
+        handler this.insertBefore(sibling: ref[List], data: ptr) => ref[List];
 
-    @expname[g_list_insert_sorted_with_data]
-    handler this.insertSorted (data: ptr, fn: CompareDataFunc, userData: ptr) => ref[List];
+        @expname[g_list_insert_sorted_with_data]
+        handler this.insertSorted(data: ptr, fn: CompareDataFunc, userData: ptr) => ref[List];
 
-    @expname[g_list_remove]
-    handler this.remove (data: ptr) => ref[List];
+        @expname[g_list_remove]
+        handler this.remove(data: ptr) => ref[List];
 
-    @expname[g_list_remove_link]
-    handler this.removeLink (link: ref[List]) => ref[List];
+        @expname[g_list_remove_link]
+        handler this.removeLink(link: ref[List]) => ref[List];
 
-    @expname[g_list_delete_link]
-    handler this.deleteLink (link: ref[List]) => ref[List];
+        @expname[g_list_delete_link]
+        handler this.deleteLink(link: ref[List]) => ref[List];
 
-    @expname[g_list_remove_all]
-    handler this.removeAll (data: ptr) => ref[List];
+        @expname[g_list_remove_all]
+        handler this.removeAll(data: ptr) => ref[List];
 
-    @expname[g_list_free]
-    handler this.free ();
+        @expname[g_list_free]
+        handler this.free();
 
-    @expname[g_list_free_full]
-    handler this.freeFull (fn: DestroyNotify);
+        @expname[g_list_free_full]
+        handler this.freeFull(fn: DestroyNotify);
 
-    @expname[g_list_alloc]
-    func alloc () => ref[List];
+        @expname[g_list_alloc]
+        func alloc() => ref[List];
 
-    @expname[g_list_free_1]
-    handler this.freeOne ();
+        @expname[g_list_free_1]
+        handler this.freeOne();
 
-    @expname[g_list_length]
-    handler this.getLength () => Int;
+        @expname[g_list_length]
+        handler this.getLength() => Int;
 
-    @expname[g_list_copy]
-    handler this.copy () => ref[List];
+        @expname[g_list_copy]
+        handler this.copy() => ref[List];
 
-    @expname[g_list_copy_deep]
-    handler this.copyDeep (fn: CopyFunc, userData: ptr) => ref[List];
+        @expname[g_list_copy_deep]
+        handler this.copyDeep(fn: CopyFunc, userData: ptr) => ref[List];
 
-    @expname[g_list_reverse]
-    handler this.reverse () => ref[List];
+        @expname[g_list_reverse]
+        handler this.reverse() => ref[List];
 
-    @expname[g_list_sort_with_data]
-    handler this.sort (fn: CompareDataFunc, userData: ptr) => ref[List];
+        @expname[g_list_sort_with_data]
+        handler this.sort(fn: CompareDataFunc, userData: ptr) => ref[List];
 
-    @expname[g_list_concat]
-    func concat (list1: ref[List], list2: ref[List]) => ref[List];
+        @expname[g_list_concat]
+        func concat(list1: ref[List], list2: ref[List]) => ref[List];
 
-    @expname[g_list_foreach]
-    handler this.foreach (fn: Func, userData: ptr);
+        @expname[g_list_foreach]
+        handler this.foreach(fn: Func, userData: ptr);
 
-    @expname[g_list_first]
-    handler this.getFirst () => ref[List];
+        @expname[g_list_first]
+        handler this.getFirst() => ref[List];
 
-    @expname[g_list_last]
-    handler this.getLast () => ref[List];
+        @expname[g_list_last]
+        handler this.getLast() => ref[List];
 
-    @expname[g_list_nth]
-    handler this.getNth (n: Word) => ref[List];
+        @expname[g_list_nth]
+        handler this.getNth(n: Word) => ref[List];
 
-    @expname[g_list_find]
-    handler this.find (data: ptr) => ref[List];
+        @expname[g_list_find]
+        handler this.find(data: ptr) => ref[List];
 
-    @expname[g_list_find_custom]
-    handler this.findCustom (data: ptr, fn: CompareFunc) => ref[List];
+        @expname[g_list_find_custom]
+        handler this.findCustom(data: ptr, fn: CompareFunc) => ref[List];
 
-    @expname[g_list_position]
-    handler this.getPosition (link: ref[List]) => Int;
+        @expname[g_list_position]
+        handler this.getPosition(link: ref[List]) => Int;
 
-    @expname[g_list_index]
-    handler this.getIndex (data: ptr) => Int;
-  };
-};
+        @expname[g_list_index]
+        handler this.getIndex(data: ptr) => Int;
+    }
+}

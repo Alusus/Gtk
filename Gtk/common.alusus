@@ -1,135 +1,128 @@
-@deps["libgtk-3.so.0", "libgobject-2.0.so.0", "libgio-2.0.so.0"] @merge def Gtk: module
-{
-  def Callback: alias ptr[function (widget: ref[Widget], data: ptr)];
+@deps["libgtk-3.so.0", "libgobject-2.0.so.0", "libgio-2.0.so.0"]
+@merge
+module Gtk  {
+    def Callback: alias ptr[function (widget: ref[Widget], data: ptr)];
 
-  class App
-  {
-    @injection def glibObj: Glib.Object;
+    class App {
+        @injection def glibObj: Glib.Object;
 
-    @expname[gtk_application_new]
-    func new (appId: ptr[array[Char]], flags: Int) => ref[App];
+        @expname[gtk_application_new]
+        func new(appId: ptr[array[Char]], flags: Int) => ref[App];
 
-    @expname[g_application_run]
-    handler this.exec (argc: Int, argv: ptr[array[ptr[array[Char]]]]): Int;
-  };
+        @expname[g_application_run]
+        handler this.exec(argc: Int, argv: ptr[array[ptr[array[Char]]]]): Int;
+    }
 
-  class Widget
-  {
-    @injection def glibObj: Glib.Object;
+    class Widget {
+        @injection def glibObj: Glib.Object;
 
-    @expname[gtk_widget_destroy]
-    func destroy (widget: ref[Widget]);
+        @expname[gtk_widget_destroy]
+        func destroy(widget: ref[Widget]);
 
-    @expname[gtk_widget_show]
-    handler this.show ();
+        @expname[gtk_widget_show]
+        handler this.show();
 
-    @expname[gtk_widget_show_now]
-    handler this.showNow ();
+        @expname[gtk_widget_show_now]
+        handler this.showNow();
 
-    @expname[gtk_widget_hide]
-    handler this.hide ();
+        @expname[gtk_widget_hide]
+        handler this.hide();
 
-    @expname[gtk_widget_show_all]
-    handler this.showAll ();
+        @expname[gtk_widget_show_all]
+        handler this.showAll();
 
-    @expname[gtk_widget_set_visible]
-    handler this.setVisible (visible: Bool);
-  };
+        @expname[gtk_widget_set_visible]
+        handler this.setVisible(visible: Bool);
+    }
 
-  class Container
-  {
-    @injection def widget: Widget;
+    class Container {
+        @injection def widget: Widget;
 
-    @expname[gtk_container_add]
-    handler this.add (widget: ref[Widget]);
+        @expname[gtk_container_add]
+        handler this.add(widget: ref[Widget]);
 
-    @expname[gtk_container_remove]
-    handler this.remove (widget: ref[Widget]);
+        @expname[gtk_container_remove]
+        handler this.remove(widget: ref[Widget]);
 
-    @expname[gtk_container_add_with_properties]
-    handler this.addWithProperties (widget: ref[Widget], firstPropName: ptr[array[Char]], ...any);
+        @expname[gtk_container_add_with_properties]
+        handler this.addWithProperties(widget: ref[Widget], firstPropName: ptr[array[Char]], ...any);
 
-    @expname[gtk_container_foreach]
-    handler this.foreach (callback: Callback, data: ptr);
+        @expname[gtk_container_foreach]
+        handler this.foreach(callback: Callback, data: ptr);
 
-    @expname[gtk_container_get_children]
-    handler this.getChildren () => ref[Glib.List];
+        @expname[gtk_container_get_children]
+        handler this.getChildren() => ref[Glib.List];
 
-    @expname[gtk_container_get_focus_child]
-    handler this.getFocusChild () => ref[Widget];
+        @expname[gtk_container_get_focus_child]
+        handler this.getFocusChild() => ref[Widget];
 
-    @expname[gtk_container_set_focus_child]
-    handler this.setFocusChild (child: ref[Widget]);
+        @expname[gtk_container_set_focus_child]
+        handler this.setFocusChild(child: ref[Widget]);
 
-    @expname[gtk_container_child_get]
-    handler this.getChildProps (child: ref[Widget], firstPropName: ptr[array[Char]], ...any);
+        @expname[gtk_container_child_get]
+        handler this.getChildProps(child: ref[Widget], firstPropName: ptr[array[Char]], ...any);
 
-    @expname[gtk_container_child_set]
-    handler this.setChildProps (child: ref[Widget], firstPropName: ptr[array[Char]], ...any);
+        @expname[gtk_container_child_set]
+        handler this.setChildProps(child: ref[Widget], firstPropName: ptr[array[Char]], ...any);
 
-    @expname[gtk_container_get_border_width]
-    handler this.getBorderWidth () => Word;
+        @expname[gtk_container_get_border_width]
+        handler this.getBorderWidth() => Word;
 
-    @expname[gtk_container_set_border_width]
-    handler this.setBorderWidth (width: Word);
-  };
+        @expname[gtk_container_set_border_width]
+        handler this.setBorderWidth(width: Word);
+    }
 
-  class TextBuffer
-  {
-    @expname[gtk_text_buffer_new]
-    func new (table: ptr) => ref[TextBuffer];
+    class TextBuffer {
+        @expname[gtk_text_buffer_new]
+        func new(table: ptr) => ref[TextBuffer];
 
-    @expname[gtk_text_buffer_set_text]
-    handler this.setText (text: ptr[array[Char]], len: Int);
+        @expname[gtk_text_buffer_set_text]
+        handler this.setText(text: ptr[array[Char]], len: Int);
 
-    @expname[gtk_text_buffer_get_text]
-    handler this.getText (start: ref[TextIter], end: ref[TextIter], includeHidden: Bool): ptr[array[Char]];
+        @expname[gtk_text_buffer_get_text]
+        handler this.getText(start: ref[TextIter], end: ref[TextIter], includeHidden: Bool): ptr[array[Char]];
 
-    @expname[gtk_text_buffer_get_start_iter]
-    handler this.getStartIter (ref[TextIter]);
+        @expname[gtk_text_buffer_get_start_iter]
+        handler this.getStartIter(ref[TextIter]);
 
-    @expname[gtk_text_buffer_get_end_iter]
-    handler this.getEndIter (ref[TextIter]);
-  };
+        @expname[gtk_text_buffer_get_end_iter]
+        handler this.getEndIter(ref[TextIter]);
+    }
 
-  class TextIter
-  {
-    def dummy1: ptr;
-    def dummy2: ptr;
-    def dummy3: Int;
-    def dummy4: Int;
-    def dummy5: Int;
-    def dummy6: Int;
-    def dummy7: Int;
-    def dummy8: Int;
-    def dummy9: ptr;
-    def dummy10: ptr;
-    def dummy11: Int;
-    def dummy12: Int;
-    // padding
-    def dummy13: Int;
-    def dummy14: ptr;
-  };
+    class TextIter {
+        def dummy1: ptr;
+        def dummy2: ptr;
+        def dummy3: Int;
+        def dummy4: Int;
+        def dummy5: Int;
+        def dummy6: Int;
+        def dummy7: Int;
+        def dummy8: Int;
+        def dummy9: ptr;
+        def dummy10: ptr;
+        def dummy11: Int;
+        def dummy12: Int;
+        // padding
+        def dummy13: Int;
+        def dummy14: ptr;
+    }
 
-  class Editable
-  {
-    @expname[gtk_editable_get_chars]
-    handler this.getChars (start: Int, end: Int) => ptr[array[Char]];
-  };
+    class Editable {
+        @expname[gtk_editable_get_chars]
+        handler this.getChars(start: Int, end: Int) => ptr[array[Char]];
+    }
 
-  class Builder
-  {
-    @expname[gtk_builder_new]
-    func new(): ref[Builder];
+    class Builder {
+        @expname[gtk_builder_new]
+        func new(): ref[Builder];
 
-    @expname[gtk_builder_new]
-    func newFromFile(filename: ptr[array[Char]]): ref[Builder];
+        @expname[gtk_builder_new]
+        func newFromFile(filename: ptr[array[Char]]): ref[Builder];
 
-    @expname[gtk_builder_new_from_resource]
-    func newFromResource(resource_path: ptr[array[Char]]): ref[Builder];
+        @expname[gtk_builder_new_from_resource]
+        func newFromResource(resource_path: ptr[array[Char]]): ref[Builder];
 
-    @expname[gtk_builder_connect_signals]
-    handler this.connectSignals(userData: ptr): Void;
-  };
-};
-
+        @expname[gtk_builder_connect_signals]
+        handler this.connectSignals(userData: ptr): Void;
+    }
+}

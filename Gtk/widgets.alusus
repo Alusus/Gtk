@@ -1,253 +1,252 @@
 @merge
 module Gtk {
-  class Bin {
-    @injection def container: Container;
+    class Bin {
+        @injection def container: Container;
 
-    @expname[gtk_bin_get_child]
-    handler this.getChild(): ref[Widget];
-  };
+        @expname[gtk_bin_get_child]
+        handler this.getChild(): ref[Widget];
+    }
 
-  class Box {
-    @injection def container: Container;
+    class Box {
+        @injection def container: Container;
 
-		@expname[gtk_box_new]
-		func new(orientation: Int, spacing: Int): ref[Box];
+        @expname[gtk_box_new]
+        func new(orientation: Int, spacing: Int): ref[Box];
 
-    @expname[gtk_box_pack_start]
-    handler this.packStart(child: ref[Widget], expand: Bool, fill: Bool, padding: Word);
+        @expname[gtk_box_pack_start]
+        handler this.packStart(child: ref[Widget], expand: Bool, fill: Bool, padding: Word);
 
-    @expname[gtk_box_pack_end]
-    handler this.packEnd(child: ref[Widget], expand: Bool, fill: Bool, padding: Word);
-  };
+        @expname[gtk_box_pack_end]
+        handler this.packEnd(child: ref[Widget], expand: Bool, fill: Bool, padding: Word);
+    }
 
-  class ButtonBox {
-    @injection def box: Box;
+    class ButtonBox {
+        @injection def box: Box;
 
-		@expname[gtk_button_box_new]
-		func new(orientation: Int): ref[ButtonBox];
+        @expname[gtk_button_box_new]
+        func new(orientation: Int): ref[ButtonBox];
 
-		@expname[gtk_button_box_set_layout]
-		handler this.setLayout(style: Int);
-  };
+        @expname[gtk_button_box_set_layout]
+        handler this.setLayout(style: Int);
+    }
 
-  class Paned {
-    @injection def container: Container;
+    class Paned {
+        @injection def container: Container;
 
-		@expname[gtk_paned_new]
-		func new(orientation: Int): ref[Paned];
+        @expname[gtk_paned_new]
+        func new(orientation: Int): ref[Paned];
 
-		@expname[gtk_paned_pack1]
-		handler this.pack1(widget: ref[Widget], resize: Bool, shrink: Bool);
+        @expname[gtk_paned_pack1]
+        handler this.pack1(widget: ref[Widget], resize: Bool, shrink: Bool);
 
-		@expname[gtk_paned_pack2]
-		handler this.pack2(widget: ref[Widget], resize: Bool, shrink: Bool);
+        @expname[gtk_paned_pack2]
+        handler this.pack2(widget: ref[Widget], resize: Bool, shrink: Bool);
 
-		@expname[gtk_paned_set_position]
-		handler this.setPosition(position: Int);
+        @expname[gtk_paned_set_position]
+        handler this.setPosition(position: Int);
 
-		@expname[gtk_paned_get_position]
-		handler this.getPosition(): Int;
-  };
+        @expname[gtk_paned_get_position]
+        handler this.getPosition(): Int;
+    }
 
-  class Stack{
-    @injection def container: Container;
+    class Stack {
+        @injection def container: Container;
 
-		@expname[gtk_stack_new]
-		func new(): ref[Stack];
-  };
+        @expname[gtk_stack_new]
+        func new(): ref[Stack];
+    }
 
-  class StackSwitcher
-  {
-    @injection def box: Box;
+    class StackSwitcher {
+        @injection def box: Box;
 
-		@expname[gtk_stack_switcher_new]
-		func new(): ref[StackSwitcher];
+        @expname[gtk_stack_switcher_new]
+        func new(): ref[StackSwitcher];
 
-    @expname[gtk_stack_switcher_set_stack]
-    handler this.setStack(stack: ref[Stack]);
-  };
+        @expname[gtk_stack_switcher_set_stack]
+        handler this.setStack(stack: ref[Stack]);
+    }
 
-  class ListBox {
-    @injection def container: Container;
+    class ListBox {
+        @injection def container: Container;
 
-		@expname[gtk_list_box_new]
-		func new(): ref[ListBox];
+        @expname[gtk_list_box_new]
+        func new(): ref[ListBox];
 
-		@expname[gtk_list_box_prepend]
-		handler this.prepend(child: ref[Widget]);
+        @expname[gtk_list_box_prepend]
+        handler this.prepend(child: ref[Widget]);
 
-		@expname[gtk_list_box_insert]
-		handler this.insert(child: ref[Widget], position: Int);
+        @expname[gtk_list_box_insert]
+        handler this.insert(child: ref[Widget], position: Int);
 
-		@expname[gtk_list_box_get_selected_rows]
-		handler this.getSelectedRows(): ref[Glib.List];
+        @expname[gtk_list_box_get_selected_rows]
+        handler this.getSelectedRows(): ref[Glib.List];
 
-		@expname[gtk_list_box_set_selection_mode]
-		handler this.setSelectionMode(mode: Int);
-  };
+        @expname[gtk_list_box_set_selection_mode]
+        handler this.setSelectionMode(mode: Int);
+    }
 
-  class Button {
-    @injection def container: Bin;
+    class Button {
+        @injection def container: Bin;
 
-		@expname[gtk_button_new_with_label]
-		func newWithLabel(label: ptr[array[Char]]): ref[Button];
-  };
+        @expname[gtk_button_new_with_label]
+        func newWithLabel(label: ptr[array[Char]]): ref[Button];
+    }
 
-  class ToggleButton {
-    @injection def button: Button;
+    class ToggleButton {
+        @injection def button: Button;
 
-		@expname[gtk_toggle_button_new_with_label]
-		func new(label: ptr[array[Char]]): ref[ToggleButton];
+        @expname[gtk_toggle_button_new_with_label]
+        func new(label: ptr[array[Char]]): ref[ToggleButton];
 
-		@expname[gtk_toggle_button_set_active]
-		handler this.setActive(active: Bool);
+        @expname[gtk_toggle_button_set_active]
+        handler this.setActive(active: Bool);
 
-		@expname[gtk_toggle_button_get_active]
-		handler this.getActive(): Bool;
-  };
+        @expname[gtk_toggle_button_get_active]
+        handler this.getActive(): Bool;
+    }
 
-  class CheckButton {
-    @injection def button: ToggleButton;
+    class CheckButton {
+        @injection def button: ToggleButton;
 
-		@expname[gtk_check_button_new_with_label]
-		func new(label: ptr[array[Char]]): ref[CheckButton];
-  };
+        @expname[gtk_check_button_new_with_label]
+        func new(label: ptr[array[Char]]): ref[CheckButton];
+    }
 
-  class MenuButton {
-    @injection def button: ToggleButton;
+    class MenuButton {
+        @injection def button: ToggleButton;
 
-		@expname[gtk_menu_button_new]
-		func new(): ref[MenuButton];
+        @expname[gtk_menu_button_new]
+        func new(): ref[MenuButton];
 
-		@expname[gtk_menu_button_set_popup]
-		handler this.setPopup(widget: ref[Widget]);
-  };
+        @expname[gtk_menu_button_set_popup]
+        handler this.setPopup(widget: ref[Widget]);
+    }
 
-  class MenuShell {
-    @injection def container: Container;
+    class MenuShell {
+        @injection def container: Container;
 
-		@expname[gtk_menu_shell_append]
-		handler this.append(child: ref[Widget]);
+        @expname[gtk_menu_shell_append]
+        handler this.append(child: ref[Widget]);
 
-		@expname[gtk_menu_shell_prepend]
-		handler this.prepend(child: ref[Widget]);
+        @expname[gtk_menu_shell_prepend]
+        handler this.prepend(child: ref[Widget]);
 
-		@expname[gtk_menu_shell_insert]
-		handler this.insert(child: ref[Widget], pos: Int);
-  };
+        @expname[gtk_menu_shell_insert]
+        handler this.insert(child: ref[Widget], pos: Int);
+    }
 
-  class Menu {
-    @injection def menuShell: MenuShell;
+    class Menu {
+        @injection def menuShell: MenuShell;
 
-		@expname[gtk_menu_new]
-		func new(): ref[Menu];
-  };
+        @expname[gtk_menu_new]
+        func new(): ref[Menu];
+    }
 
-  class MenuItem {
-    @injection def bin: Bin;
+    class MenuItem {
+        @injection def bin: Bin;
 
-		@expname[gtk_menu_item_new_with_label]
-		func new(label: ptr[array[Char]]): ref[MenuItem];
-  };
+        @expname[gtk_menu_item_new_with_label]
+        func new(label: ptr[array[Char]]): ref[MenuItem];
+    }
 
-  class Image {
-    @injection def widget: Widget;
+    class Image {
+        @injection def widget: Widget;
 
-		@expname[gtk_image_new_from_file]
-		func new(filename: ptr[array[Char]]): ref[Image];
+        @expname[gtk_image_new_from_file]
+        func new(filename: ptr[array[Char]]): ref[Image];
 
-		@expname[gtk_image_set_pixel_size]
-		handler this.setPixelSize(size: Int);
-  };
+        @expname[gtk_image_set_pixel_size]
+        handler this.setPixelSize(size: Int);
+    }
 
-  class Label {
-    @injection def widget: Widget;
+    class Label {
+        @injection def widget: Widget;
 
-		@expname[gtk_label_new]
-		func new(str: ptr[array[Char]]): ref[Label];
+        @expname[gtk_label_new]
+        func new(str: ptr[array[Char]]): ref[Label];
 
-		@expname[gtk_label_set_text]
-		handler this.setText(text: ptr[array[Char]]);
+        @expname[gtk_label_set_text]
+        handler this.setText(text: ptr[array[Char]]);
 
-		@expname[gtk_label_get_text]
-		handler this.getText(): ptr[array[Char]];
-  };
+        @expname[gtk_label_get_text]
+        handler this.getText(): ptr[array[Char]];
+    }
 
-  class Entry {
-    @injection def widget: Widget;
+    class Entry {
+        @injection def widget: Widget;
 
-		@expname[gtk_entry_new]
-		func new(): ref[Entry];
+        @expname[gtk_entry_new]
+        func new(): ref[Entry];
 
-		@expname[gtk_entry_set_text]
-		handler this.setText(text: ptr[array[Char]]);
+        @expname[gtk_entry_set_text]
+        handler this.setText(text: ptr[array[Char]]);
 
-		@expname[gtk_entry_get_text]
-		handler this.getText(): ptr[array[Char]];
+        @expname[gtk_entry_get_text]
+        handler this.getText(): ptr[array[Char]];
 
-		@expname[gtk_entry_get_text_length]
-		handler this.getTextLength(): Int[16];
+        @expname[gtk_entry_get_text_length]
+        handler this.getTextLength(): Int[16];
 
-		@expname[gtk_entry_set_visibility]
-		handler this.setVisibility(visible: Bool);
+        @expname[gtk_entry_set_visibility]
+        handler this.setVisibility(visible: Bool);
 
-		@expname[gtk_entry_set_invisible_char]
-		handler this.setInvisibleChar(chr: Int[32]);
+        @expname[gtk_entry_set_invisible_char]
+        handler this.setInvisibleChar(chr: Int[32]);
 
-		@expname[gtk_entry_set_width_chars]
-		handler this.setWidthChars(nchars: Int);
+        @expname[gtk_entry_set_width_chars]
+        handler this.setWidthChars(nchars: Int);
 
-		@expname[gtk_entry_set_has_frame]
-		handler this.setHasFrame(hasFrame: Bool);
+        @expname[gtk_entry_set_has_frame]
+        handler this.setHasFrame(hasFrame: Bool);
 
-		@expname[gtk_entry_set_alignment]
-		handler this.setAlignment(xalign: Float);
+        @expname[gtk_entry_set_alignment]
+        handler this.setAlignment(xalign: Float);
 
-		@expname[gtk_entry_set_placeholder_text]
-		handler this.setPlaceholderText(text: ptr[array[Char]]);
-  };
+        @expname[gtk_entry_set_placeholder_text]
+        handler this.setPlaceholderText(text: ptr[array[Char]]);
+    }
 
-  class TextView {
-    @injection def container: Container;
+    class TextView {
+        @injection def container: Container;
 
-		@expname[gtk_text_view_new_with_buffer]
-		func new(buf: ref[TextBuffer]): ref[TextView];
+        @expname[gtk_text_view_new_with_buffer]
+        func new(buf: ref[TextBuffer]): ref[TextView];
 
-		@expname[gtk_text_view_set_wrap_mode]
-		handler this.setWrapMode(mode: Int);
+        @expname[gtk_text_view_set_wrap_mode]
+        handler this.setWrapMode(mode: Int);
 
-		@expname[gtk_text_view_set_editable]
-		handler this.setEditable(setting: Bool);
+        @expname[gtk_text_view_set_editable]
+        handler this.setEditable(setting: Bool);
 
-		@expname[gtk_text_view_set_cursor_visible]
-		handler this.setCursorVisible(setting: Bool);
+        @expname[gtk_text_view_set_cursor_visible]
+        handler this.setCursorVisible(setting: Bool);
 
-		@expname[gtk_text_view_set_justification]
-		handler this.setJustification(justification: Int);
-  };
+        @expname[gtk_text_view_set_justification]
+        handler this.setJustification(justification: Int);
+    }
 
-  class HeaderBar {
-    @injection def container: Container;
+    class HeaderBar {
+        @injection def container: Container;
 
-		@expname[gtk_header_bar_new]
-		func new(): ref[HeaderBar];
+        @expname[gtk_header_bar_new]
+        func new(): ref[HeaderBar];
 
-		@expname[gtk_header_bar_set_title]
-		handler this.setTitle(title: ptr[array[Char]]);
+        @expname[gtk_header_bar_set_title]
+        handler this.setTitle(title: ptr[array[Char]]);
 
-		@expname[gtk_header_bar_set_subtitle]
-		handler this.setSubtitle(subtitle: ptr[array[Char]]);
+        @expname[gtk_header_bar_set_subtitle]
+        handler this.setSubtitle(subtitle: ptr[array[Char]]);
 
-		@expname[gtk_header_bar_set_custom_title]
-		handler this.setCustomTitle(widget: ref[Widget]);
+        @expname[gtk_header_bar_set_custom_title]
+        handler this.setCustomTitle(widget: ref[Widget]);
 
-		@expname[gtk_header_bar_pack_start]
-		handler this.packStart(widget: ref[Widget]);
+        @expname[gtk_header_bar_pack_start]
+        handler this.packStart(widget: ref[Widget]);
 
-		@expname[gtk_header_bar_pack_end]
-		handler this.packEnd(widget: ref[Widget]);
+        @expname[gtk_header_bar_pack_end]
+        handler this.packEnd(widget: ref[Widget]);
 
-		@expname[gtk_header_bar_set_show_close_button]
-		handler this.setShowCloseButton(setting: Bool);
-  };
-};
+        @expname[gtk_header_bar_set_show_close_button]
+        handler this.setShowCloseButton(setting: Bool);
+    }
+}
