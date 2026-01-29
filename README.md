@@ -1,4 +1,5 @@
 # Gtk
+[[العربية]](README.ar.md)
 
 GTK+ bindings for the Alusus Programming Language, providing access to the GTK 3 toolkit for building graphical user interfaces.
 
