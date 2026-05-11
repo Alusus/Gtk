@@ -21,7 +21,7 @@ import "Srl/Console.alusus";
 import "Srl/String.alusus";
 import "Srl/Memory.alusus";
 import "Apm.alusus";
-Apm.importFile("Alusus/Gtk");
+Apm.importPackage("Alusus/Gtk@0.2");
 
 def SimpleTimer: module
 {
