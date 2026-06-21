@@ -9,27 +9,27 @@ This library provides Alusus language bindings for GTK+ 3, enabling developers t
 
 ## Components
 
-- **Gtk**: Core GTK+ 3 bindings including:
-  - `common.alusus` - Common GTK types and functions
-  - `constants.alusus` - GTK constants and enumerations
-  - `widgets.alusus` - Widget bindings (buttons, labels, entries, etc.)
-  - `windows.alusus` - Window and container management
+* **Gtk**: Core GTK+ 3 bindings including:
+  * `common.alusus` - Common GTK types and functions
+  * `constants.alusus` - GTK constants and enumerations
+  * `widgets.alusus` - Widget bindings (buttons, labels, entries, etc.)
+  * `windows.alusus` - Window and container management
 
-- **Glib**: GLib library bindings providing:
-  - `common.alusus` - Common GLib types and utilities
-  - `List.alusus` - GLib list data structures
+* **Glib**: GLib library bindings providing:
+  * `common.alusus` - Common GLib types and utilities
+  * `List.alusus` - GLib list data structures
 
-- **Examples**: Sample applications demonstrating library usage:
-  - `hello_world.alusus` - Basic GTK window example
-  - `simple_timer.alusus` - Timer application
-  - `widgets_guide.alusus` - Widget usage examples
-  - `factorial.alusus` - Factorial calculator demo
+* **Examples**: Sample applications demonstrating library usage:
+  * `hello_world.alusus` - Basic GTK window example
+  * `simple_timer.alusus` - Timer application
+  * `widgets_guide.alusus` - Widget usage examples
+  * `factorial.alusus` - Factorial calculator demo
 
 ## Usage
 
 Import the library in your Alusus program:
 
-```alusus
+```
 import "Apm";
 Apm.importPackage("Alusus/Gtk@0.2");
 ```
