@@ -17,7 +17,7 @@
  * License along with this library; if not, see <https://www.gnu.org/licenses/>.
  */
 
-@deps["libgtk-3.so.0", "libgobject-2.0.so.0", "libgio-2.0.so.0"]
+@Build.deps["libgtk-3.so.0", "libgobject-2.0.so.0", "libgio-2.0.so.0"]
 @merge
 module Gtk  {
     def Callback: alias ptr[function (widget: ref[Widget], data: ptr)];
