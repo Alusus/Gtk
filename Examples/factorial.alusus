@@ -18,7 +18,7 @@
  */
 
 import "Apm";
-Apm.importPackage("Alusus/Gtk@0.2");
+Apm.importPackage("Alusus/Gtk@0.3");
 import "Build";
 import "Srl/Console";
 import "Srl/String";

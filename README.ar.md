@@ -43,7 +43,7 @@
 
 ```
 import "Apm";
-Apm.importPackage("Alusus/Gtk@0.2");
+Apm.importPackage("Alusus/Gtk@0.3");
 ```
 
 </div>

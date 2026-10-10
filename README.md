@@ -31,7 +31,7 @@ Import the library in your Alusus program:
 
 ```
 import "Apm";
-Apm.importPackage("Alusus/Gtk@0.2");
+Apm.importPackage("Alusus/Gtk@0.3");
 ```
 
 ## License

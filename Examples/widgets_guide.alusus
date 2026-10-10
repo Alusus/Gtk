@@ -19,7 +19,7 @@
 
 import "Srl/String.alusus";
 import "Apm.alusus";
-Apm.importPackage("Alusus/Gtk@0.2");
+Apm.importPackage("Alusus/Gtk@0.3");
 import "Build.alusus";
 
 module WidgetGuide
